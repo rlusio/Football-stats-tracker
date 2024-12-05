@@ -8,7 +8,9 @@ class EmptyDataError(Exception):
   def __init__(self, s: str=""):
     super().__init__(s)
 
-class UnknownIDError(Exception): pass
+class UnknownIDError(Exception): 
+  def __init__(self, s: str=""):
+    super().__init__(s)
 
 def get_competitions_ids() -> dict:
   uri = 'https://api.football-data.org/v4/competitions'
@@ -84,3 +86,28 @@ def get_competition_standings(id: str, year: int=2024, type: str="TOTAL") -> dic
   if not standings_filtered:
     raise EmptyDataError("Most likely unknown type")
   return standings_filtered
+
+def get_team_players(id: str) -> dict[str, str]:
+  uri = f'https://api.football-data.org/v4/teams/{id}'
+  headers = {'X-Auth-Token': API_KEY}
+  try:
+    response = requests.get(uri, headers=headers)
+    response.raise_for_status()
+  except requests.exceptions.RequestException as e:
+    logger.warning(f"failed to fetch teams' {id} players ({str(e)})")
+    raise e
+  result = {}
+  for player in response.json().get('squad'):
+    result[player["id"]] = player["name"]
+  return result
+
+def get_player(id: str):
+  uri = f'https://api.football-data.org/v4/persons/{id}'
+  headers = {'X-Auth-Token': API_KEY}
+  try:
+    response = requests.get(uri, headers=headers)
+    response.raise_for_status()
+  except requests.exceptions.RequestException as e:
+    logger.warning(f"failed to fetch players' {id} data ({str(e)})")
+    raise e
+  return response.json()

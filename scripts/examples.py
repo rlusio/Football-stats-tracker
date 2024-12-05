@@ -12,5 +12,13 @@ def comp_standings():
     for data in response_data:
         print(f"{data['position']}. ({data['points']}p): {data['team'].get('name')}")
 
+def player():
+    p = get_player('421')
+    print(p)
+
+def team_players():
+    t = get_team_players('112')
+    print(t)
+
 if __name__ == "__main__":
-    current_season()
+    team_players()
