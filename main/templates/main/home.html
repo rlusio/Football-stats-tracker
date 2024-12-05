@@ -1,55 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Stats Tracker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+{% extends "base.html" %}
 
-        header {
-            background-color: #0044cc;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-        }
+{% block title %}
+Login
+{% endblock %}
 
-        main {
-            padding: 20px;
-            text-align: center;
-        }
-
-        footer {
-            background-color: #222;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Football Stats Tracker</h1>
-    </header>
-
-    <main>
-        <h2>Welcome to the Football Stats Tracker!</h2>
-        <p>Track football scores of your favourite player and team.</p>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Football Stats Tracker. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Login</h2>
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-block mt-3">Login</button>
+    </form>
+    <p class="text-center mt-3">
+        Don't have an account? <a href="{% url 'login:register' %}">Register here</a>
+    </p>
+</div>
+{% endblock %}
