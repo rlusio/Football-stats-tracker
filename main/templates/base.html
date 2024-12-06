@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>FootballStatsTracker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FootballStatsTracker{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    {% block nav_content %}
+                    {% endblock %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
 
-<div>
-  <ul>
-    <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'login:login' %}">Login</a></li>
-    <li><a href="{% url 'login:register' %}">Register</a></li>
-  </ul> 
-</div>
-
-
-{% block content %}
-{% endblock %}
-
-
-
-<div>
- <p> More soon! </p>
-</div>
-
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 FootballStatsTracker</p>
+    </footer>
 </body>
 </html>
