@@ -7,7 +7,7 @@ Home
 {% block nav_content %}
     {% if user.is_authenticated %}
         <li class="nav-item">
-            <span class="nav-link">Welcome, {{ user.username }}!</span>
+            <span class="nav-link">User: {{ user.username }}!</span>
         </li>
         <li class="nav-item">
             <form method="post" action="{% url 'login:logout' %}" class="d-inline">
