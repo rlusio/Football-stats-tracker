@@ -1,6 +1,7 @@
 import requests
 import logging
-from config import API_KEY
+import os
+API_KEY = os.getenv('API_KEY')
 
 logger = logging.getLogger(__name__)
 

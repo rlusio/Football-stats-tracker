@@ -11,3 +11,6 @@ migrations/
 #virtual env
 venv/
 .env/
+
+# db
+*.sqlite3
