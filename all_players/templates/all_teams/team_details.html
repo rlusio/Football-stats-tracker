@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ myteam.Competators }} </h1>  
+<p>Team_Name: {{ myteam.Team_Name }}</p>
+<p>Country: {{ myteam.Country }}</p>
+<p>City: {{ myteam.City }}</p>
+<p>marketValue: {{ myteam.marketValue }}</p>
+<p>Number_of_Players: {{ myteam.Number_of_Players }}</p>
+<p>Standings: {{ myteam.Standings }}</p>
+
+<p>Back to <a href="/all_teams/">All_Teams</a></p>
+
+{% endblock %}
