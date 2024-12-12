@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% load static %}
+<img src="{% static 'Boca_Juniors_logo.svg.png' %}">
+
+{% endblock %}
+{% block content %}
+  <h1>Team: CA Boca Juniors </h1>
+  <h3>Coach: Sebastián Battaglia</h3>
+  <p>View team members <a href="{% url 'all_players' %}">all_players</a></p>
+  
+{% endblock %}

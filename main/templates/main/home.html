@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block nav_content %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_players' %}">All Players</a>
+    </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <span class="nav-link">User: <strong>{{ user.username }}</strong></span>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'login:logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link nav-link">Logout</button>
+            </form>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login:login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login:register' %}">Register</a>
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>Welcome to Football Stats Tracker</h1>
+<p>Follow your favourite player, and team!</p>
+{% if user.is_authenticated %}
+    <p>Hello, {{ user.username }}! Explore your stats.</p>
+{% else %}
+    <p>Please <a href="{% url 'login:login' %}">log in</a> or <a href="{% url 'login:register' %}">register</a> to get started.</p>
+{% endif %}
+{% endblock %}

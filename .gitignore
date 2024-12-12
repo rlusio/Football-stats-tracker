@@ -1,0 +1,17 @@
+# pycache
+__pycache__/
+
+# config file
+config.py
+
+# migrations
+migrations/
+
+
+#virtual env
+venv/
+.env/
+.env
+
+# db
+*.sqlite3
