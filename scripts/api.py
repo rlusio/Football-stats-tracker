@@ -1,6 +1,8 @@
 import requests
 import logging
 import os
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 API_KEY = os.getenv('API_KEY')
 
 logger = logging.getLogger(__name__)
@@ -110,5 +112,16 @@ def get_player(id: str):
     response.raise_for_status()
   except requests.exceptions.RequestException as e:
     logger.warning(f"failed to fetch players' {id} data ({str(e)})")
+    raise e
+  return response.json()
+
+def get_match(id: str):
+  uri = f'https://api.football-data.org/v4/matches/{id}'
+  headers = {'X-Auth-Token': API_KEY}
+  try:
+    response = requests.get(uri, headers=headers)
+    response.raise_for_status()
+  except requests.exceptions.RequestException as e:
+    logger.warning(f"failed to fetch matches' {id} data ({str(e)})")
     raise e
   return response.json()
