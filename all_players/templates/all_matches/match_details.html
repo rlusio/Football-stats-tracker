@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
+{% endblock %}
+
+{% block content %}
+<h1>{{ mymatch.Competators }} </h1>  
+<p>Match_Place: {{ mymatch.Match_Place }}</p>
+<p>Competetion: {{ mymatch.Competetion }}</p>
+<p>Season_Start_date: {{ mymatch.Season_Start_date }}</p>
+<p>Season_End_date: {{ mymatch.Season_End_date }}</p>
+<p>Score: {{ mymatch.Score }}</p>
+<p>Status: {{ mymatch.Status }}</p>
+
+<p>Back to <a href="/all_matches/">All_Matches</a></p>
+
+{% endblock %}
