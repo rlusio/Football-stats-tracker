@@ -23,3 +23,4 @@ urlpatterns = [
     path('', include('main.urls')),        
     path('all_players/', include('all_players.urls')),
 ]
+
