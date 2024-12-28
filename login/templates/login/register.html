@@ -4,13 +4,25 @@
 Register
 {% endblock %}
 
+{% block nav_content %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_players' %}">All Players</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_teams' %}">All Teams</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_matches' %}">All Matches</a>
+    </li>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center">Register</h2>
     <form method="post" class="form-group">
         {% csrf_token %}
         {{ form.as_p }} 
-        <button type="submit" class="btn btn-success btn-block mt-3">Register</button>
+        <button type="submit" class="btn btn-success btn-block mt-3">Register</button> or  <a href="{% url 'login:login' %}">log in.</a>
     </form>
 </div>
 {% endblock %}

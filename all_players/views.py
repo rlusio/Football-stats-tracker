@@ -25,5 +25,8 @@ def match_details(request, id):
     mymatch = get_object_or_404(Match, id=id) 
     return render(request, 'all_matches/match_details.html', {'mymatch': mymatch})
 
+def user(request):
+    return render(request, 'user/user.html')
+
 def main(request):
     return render(request, 'main/home.html')

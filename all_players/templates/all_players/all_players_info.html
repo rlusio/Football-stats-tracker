@@ -4,7 +4,29 @@
   Squad:
 {% endblock %}
 
-{% block content %}
+{% block nav_content %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_players' %}">All Players</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_teams' %}">All Teams</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_matches' %}">All Matches</a>
+    </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+            <span class="nav-link">User: <strong>{{ user.username }}</strong></span>
+        </li>
+        <li class="nav-item">
+            <form method="post" action="{% url 'login:logout' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link nav-link">Logout</button>
+            </form>
+        </li>
+        {% endif %}
+{% endblock %}
 
+{% block content %}
 <h1>All_players</h1>
 {% endblock %}
