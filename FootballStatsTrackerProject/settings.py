@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'login',
     'main',
-    'crispy_bootstrap4',
     'all_players',
 ]
 
