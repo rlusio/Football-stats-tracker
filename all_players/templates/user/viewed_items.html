@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Recently Viewed Matches
+{% endblock %}
+
+{% block content %}
+<h1>Your Recently Viewed Matches</h1>
+
+{% if viewed_matches %}
+<ul>
+    {% for match in viewed_matches %}
+    <li>
+        <strong>{{ match.Competetion }}</strong> - {{ match.Competators }}
+        <a class="nav-link" href="{% url 'match_details' match.id %}">View Details</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You haven't viewed any matches yet.</p>
+{% endif %}
+
+<a class="nav-link" href="{% url 'all_matches' %}">Back to All Matches</a>
+
+<button><a class="nav-link" class="btn" href="{% url 'user' %}">Back to User</a></button>
+{% endblock %}

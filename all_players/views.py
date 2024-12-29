@@ -32,8 +32,22 @@ def all_matches(request):
     return render(request, 'all_matches/all_matches.html', {'mymatches': mymatches})
 
 def match_details(request, id):
-    mymatch = get_object_or_404(Match, id=id) 
+    mymatch = get_object_or_404(Match, id=id)
+    viewed_matches = request.session.get('viewed_matches', [])
+    if id not in viewed_matches:
+        viewed_matches.append(id)
+        if len(viewed_matches) > 10:
+            viewed_matches.pop(0)
+    request.session['viewed_matches'] = viewed_matches     
     return render(request, 'all_matches/match_details.html', {'mymatch': mymatch})
+
+def user(request):
+    return render(request, 'user/user.html')
+
+def viewed_items(request):
+    viewed_matches_ids = request.session.get('viewed_matches', [])
+    viewed_matches = Match.objects.filter(id__in=viewed_matches_ids)
+    return render(request, 'user/viewed_items.html', {'viewed_matches': viewed_matches})
 
 def main(request):
     return render(request, 'main/home.html')

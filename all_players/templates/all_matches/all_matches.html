@@ -39,7 +39,7 @@
   {% for x in mymatches %}
   <li>
     <strong>{{ x.Competetion }}</strong> - {{ x.Season_Start_date }} to {{ x.Season_End_date }}
-    <br>
+    
     <a href="{% url 'match_details' x.id %}">Details</a>
   </li>
   {% endfor %}
