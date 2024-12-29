@@ -22,9 +22,25 @@
             <form method="post" action="{% url 'login:logout' %}" class="d-inline">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link nav-link">Logout</button>
-            </form>
+            </form>w
         </li>
         {% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>All Players</h1>
+<ul>
+   {% for player in players %}
+    <li>
+        <a href="{% url 'details' player.id %}">{{ player.firstname }} {{ player.lastname }}</a> - {{ player.position }}
+    </li>
+    {% endfor %}
+</ul>
+
+
+{% if players|length > 0 and players.0.team %}
+<p><a href="{% url 'team_details' players.0.team.id %}">Back to Team Details</a></p>
+{% endif %}
 {% endblock %}
 
 {% block content %}

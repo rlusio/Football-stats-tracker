@@ -1,22 +1,29 @@
 from django.db import models
 
+class Team(models.Model):
+    Team_Name = models.CharField(max_length=255, null=False)
+    Country = models.CharField(max_length=255, null=False)
+    City = models.CharField(max_length=255, null=False)
+    marketValue = models.IntegerField(null=True)
+    Number_of_Players = models.IntegerField(null=False)
+    Standings = models.IntegerField(null=False)
+    logo_url = models.URLField(null=True, blank=True)
+
 class Player(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
-    position = models.CharField(max_length=255, null=False)  
-    joined_date = models.DateField(null=False)
-    nationality = models.CharField(max_length=255, null=False)  
-    marketValue = models.IntegerField(null=True)  
-    shirtNumber=models.IntegerField(null=True)
-    
-class Team(models.Model):
-    Team_Name = models.CharField(max_length=255, null=False)  
-    Country = models.CharField(max_length=255, null=False) 
-    City = models.CharField(max_length=255, null=False)  
-    marketValue = models.IntegerField(null=True)  
-    Number_of_Players = models.IntegerField(null=False)  
-    Standings = models.IntegerField(null=False)  
+    position = models.CharField(max_length=255)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=1)  
+    joined_date = models.DateField(null=True, blank=True)
+    nationality = models.CharField(max_length=255)
+    marketValue = models.IntegerField(null=True)
+    shirtNumber = models.IntegerField(null=True)
+    dateOfBirth = models.DateField(null=True, blank=True)  
+        
+    def __str__(self):
+        return f"{self.firstname} {self.lastname} ({self.team.Team_Name})"
 
+    
 class Match(models.Model):
     Competators = models.CharField(max_length=255, null=False)  
     Match_Place = models.CharField(max_length=255, null=False)  

@@ -5,13 +5,14 @@ Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
 {% endblock %}
 
 {% block content %}
-  <h1>{{ myplayer.firstname }} {{ myplayer.lastname }}</h1>  
-<p>Position: {{ myplayer.position }}</p>
-<p>DateOfBirth: {{ myplayer.joined_date }}</p>
-<p>Nationality: {{ myplayer.nationality }}</p>
-<p>ShirtNumber: {{ myplayer.shirtNumber }}</p>
-<p>MarketValue: {{ myplayer.marketValue }}</p>
+<h1>{{ myplayer.firstname }} {{ myplayer.lastname }}</h1>  
+<p><strong>Position:</strong> {{ myplayer.position }}</p>
+<p><strong>Date Of Birth:</strong> {{ myplayer.dateOfBirth }}</p>
+<p><strong>Nationality:</strong> {{ myplayer.nationality }}</p>
+<p><strong>Shirt Number:</strong> {{ myplayer.shirtNumber }}</p>
+<p><strong>Market Value:</strong> {{ myplayer.marketValue }}</p>
 
-<p>Back to <a href="/all_players">All_players</a></p>
-
+<p>
+    Back to <a href="{% url 'team_players' myplayer.team.id %}">Players in {{ myplayer.team.Team_Name }}</a>
+</p>
 {% endblock %}

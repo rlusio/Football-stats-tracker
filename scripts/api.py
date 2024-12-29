@@ -1,8 +1,10 @@
 import requests
 import logging
 import os
+import time
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
+
 API_KEY = os.getenv('API_KEY')
 
 logger = logging.getLogger(__name__)
@@ -46,24 +48,27 @@ def get_current_season(id: str) -> dict:
   current_season = response.json().get('currentSeason', {})
   return current_season
   
-def get_competition_teams(id: str, year: int=2024) -> dict:
-  try:
-    allowed_ids = get_competitions_ids()
-  except requests.exceptions.RequestException as e:
-    logger.warning(f"failed to fetch competitions IDs ({str(e)})")
-    raise e
-  if not allowed_ids:
-    logger.warning("got empty competitions IDs")
-    raise UnknownIDError
-  if id not in allowed_ids.keys():
-    logger.warning(f"unknown id for competition teams lookup: {id}, allowed ids: {allowed_ids.keys()}")
-    raise EmptyDataError
-  uri = f'https://api.football-data.org/v4/competitions/{id}/teams?season={year}'
-  headers = {'X-Auth-Token': API_KEY}
-  response = requests.get(uri, headers=headers)
-  response.raise_for_status() 
-  teams = response.json().get('teams', {})
-  return teams
+def get_competition_teams(competition_id: str, year: int = 2024) -> list:
+   
+    uri = f'https://api.football-data.org/v4/competitions/{competition_id}/teams?season={year}'
+    headers = {'X-Auth-Token': API_KEY}
+    try:
+        response = requests.get(uri, headers=headers)
+        response.raise_for_status()  
+        teams = response.json().get('teams', [])
+        if not teams:
+            logger.warning(f"No teams found for competition {competition_id} in season {year}.")
+            raise EmptyDataError("No teams found.")
+        
+        logger.info(f"Successfully fetched {len(teams)} teams for competition {competition_id}.")
+        return teams
+    
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Failed to fetch teams for competition {competition_id}: {str(e)}")
+        raise e
+    except KeyError as e:
+        logger.error(f"Unexpected API response structure: {str(e)}")
+        raise EmptyDataError("Unexpected response structure.")
 
 def get_competition_standings(id: str, year: int=2024, type: str="TOTAL") -> dict:
   try:
@@ -90,19 +95,28 @@ def get_competition_standings(id: str, year: int=2024, type: str="TOTAL") -> dic
     raise EmptyDataError("Most likely unknown type")
   return standings_filtered
 
-def get_team_players(id: str) -> dict[str, str]:
-  uri = f'https://api.football-data.org/v4/teams/{id}'
-  headers = {'X-Auth-Token': API_KEY}
-  try:
-    response = requests.get(uri, headers=headers)
-    response.raise_for_status()
-  except requests.exceptions.RequestException as e:
-    logger.warning(f"failed to fetch teams' {id} players ({str(e)})")
-    raise e
-  result = {}
-  for player in response.json().get('squad'):
-    result[player["id"]] = player["name"]
-  return result
+def get_team_players(id: str) -> dict:
+    uri = f'https://api.football-data.org/v4/teams/{id}'
+    headers = {'X-Auth-Token': API_KEY}
+    try:
+        response = requests.get(uri, headers=headers)
+        response.raise_for_status()
+        squad = response.json().get('squad', [])
+        result = {
+            player["id"]: {
+                "name": player["name"],
+                "position": player.get("position", "Unknown"),
+                "dateOfBirth": player.get("dateOfBirth", None),
+                "nationality": player.get("nationality", "Unknown"),
+                "shirtNumber": player.get("shirtNumber", None),
+            }
+            for player in squad
+        }
+        time.sleep(3)  
+        return result
+    except requests.exceptions.RequestException as e:
+        logger.warning(f"Failed to fetch players for team {id}: {e}")
+        raise e
 
 def get_player(id: str):
   uri = f'https://api.football-data.org/v4/persons/{id}'

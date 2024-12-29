@@ -1,17 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}
-Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
+Details about {{ myteam.Team_Name }}
 {% endblock %}
 
 {% block content %}
-<h1>{{ myteam.Competators }} </h1>  
-<p>Team_Name: {{ myteam.Team_Name }}</p>
-<p>Country: {{ myteam.Country }}</p>
-<p>City: {{ myteam.City }}</p>
-<p>marketValue: {{ myteam.marketValue }}</p>
-<p>Number_of_Players: {{ myteam.Number_of_Players }}</p>
-<p>Standings: {{ myteam.Standings }}</p>
+<h1>{{ myteam.Team_Name }}</h1>
+<img src="{{ myteam.logo_url }}" alt="Logo for {{ myteam.Team_Name }}" style="width: 100px; height: 100px;">
+<p><strong>Country:</strong> {{ myteam.Country }}</p>
+<p><strong>City:</strong> {{ myteam.City }}</p>
+<p><strong>Market Value:</strong> {{ myteam.marketValue }}</p>
+<p><strong>Number of Players:</strong> {{ myteam.Number_of_Players }}</p>
+<p><strong>Standings:</strong> {{ myteam.Standings }}</p>
+<p>
+    <a href="{% url 'team_players' myteam.id %}">View All Players</a>
+
+</p>
+
+<p><a href="{% url 'all_teams' %}">Back to All Teams</a></p>
 
 
 {% endblock %}

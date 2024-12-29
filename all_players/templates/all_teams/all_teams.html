@@ -29,11 +29,19 @@
 {% endblock %}
 {% block content %}
 
-<h1>All_teams</h1>
+<h1>All Teams</h1>
 <ul>
-  {% for x in myteams %}
-  <li><a href="team_details/{{x.id}}">{{ x.Team_Name }}</a></li>
-  {% endfor %}  
+    {% for team in myteams %}
+        <li>
+            <a href="{% url 'team_details' team.id %}">
+                <img src="{{ team.logo_url }}" alt="Logo for {{ team.Team_Name }}" style="width: 50px; height: 50px;">
+                {{ team.Team_Name }}
+            </a>
+        </li>
+    {% endfor %}
 </ul>
+
+
+
 
 {% endblock %}

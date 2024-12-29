@@ -1,13 +1,23 @@
-from .models import Player, Team, Match
+from all_players.models import Player, Team, Match
 from django.shortcuts import render, get_object_or_404
 
-def all_players(request):
-    myplayers = Player.objects.all() 
-    return render(request, 'all_players/all_players_info.html', {'myplayers': myplayers})
+def all_players(request, team_id=None):
+    if team_id:
+        team = get_object_or_404(Team, id=team_id)
+        
+        myplayers = Player.objects.filter(team__Team_Name=team.Team_Name)
+    else:
+        myplayers = Player.objects.all()
+    return render(request, 'all_players/all_players_info.html', {'players': myplayers})
+
+def team_players(request, team_id):
+    myplayers = Player.objects.filter(team=team_id)  
+    return render(request, 'all_players/all_players_info.html', {'players': myplayers})
 
 def details(request, id):
     myplayer = get_object_or_404(Player, id=id) 
-    return render(request, 'details.html', {'myplayer': myplayer})
+    return render(request, 'all_players/details.html', {'myplayer': myplayer})
+
 
 def all_teams(request):
     myteams = Team.objects.all()
@@ -24,9 +34,6 @@ def all_matches(request):
 def match_details(request, id):
     mymatch = get_object_or_404(Match, id=id) 
     return render(request, 'all_matches/match_details.html', {'mymatch': mymatch})
-
-def user(request):
-    return render(request, 'user/user.html')
 
 def main(request):
     return render(request, 'main/home.html')
