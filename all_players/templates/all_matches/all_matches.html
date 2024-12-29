@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h1>All_matches</h1>
+<h1>All matches</h1>
 <ul>
   {% for x in mymatches %}
   <li> Match  <a href="{%url 'match_details' x.id %}">{{ x.Competators }}</a></li>

@@ -30,5 +30,5 @@ class Match(models.Model):
     Competetion = models.CharField(max_length=255, null=False)  
     Season_Start_date = models.DateField(null=False)
     Season_End_date = models.DateField(null=False)  
-    Score = models.CharField(max_length=255, null=True)
+    Score = models.CharField(max_length=255, null=False)
     Status = models.CharField(max_length=255, null=False)
