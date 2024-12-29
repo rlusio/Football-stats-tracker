@@ -16,7 +16,8 @@
     </li>
     {% if user.is_authenticated %}
         <li class="nav-item">
-            <span class="nav-link">User: <strong>{{ user.username }}</strong></span>
+          <a class="nav-link" href="{% url 'user' %}"> User: <strong>{{ user.username }}</strong></a>
+        
         </li>
         <li class="nav-item">
             <form method="post" action="{% url 'login:logout' %}" class="d-inline">

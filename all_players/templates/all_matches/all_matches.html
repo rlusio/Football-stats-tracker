@@ -16,7 +16,7 @@
     </li>
     {% if user.is_authenticated %}
         <li class="nav-item">
-            <span class="nav-link">User: <strong>{{ user.username }}</strong></span>
+          <a class="nav-link" href="{% url 'user' %}"> User: <strong>{{ user.username }}</strong></a>
         </li>
         <li class="nav-item">
             <form method="post" action="{% url 'login:logout' %}" class="d-inline">
@@ -32,8 +32,16 @@
 <h1>All_matches</h1>
 <ul>
   {% for x in mymatches %}
-  <li>match  <a href="match_details/{{x.id}}">{{ x.Competators }}</a></li>
+  <li> Match  <a href="{%url 'match_details' x.id %}">{{ x.Competators }}</a></li>
   {% endfor %}  
 </ul>
-
+<ul>
+  {% for x in mymatches %}
+  <li>
+    <strong>{{ x.Competetion }}</strong> - {{ x.Season_Start_date }} to {{ x.Season_End_date }}
+    <br>
+    <a href="{% url 'match_details' x.id %}">Details</a>
+  </li>
+  {% endfor %}
+</ul>
 {% endblock %}
