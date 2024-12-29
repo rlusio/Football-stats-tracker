@@ -2,29 +2,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-  Squad:
-{% endblock %}
-{% block nav_content %}
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'all_players' %}">All Players</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'all_teams' %}">All Teams</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'all_matches' %}">All Matches</a>
-    </li>
-    {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'user' %}"> User: <strong>{{ user.username }}</strong></a>
-        </li>
-        <li class="nav-item">
-            <form method="post" action="{% url 'login:logout' %}" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-link nav-link">Logout</button>
-            </form>
-        </li>
-    {% endif %}
+  All matches
 {% endblock %}
 
 {% block content %}
@@ -35,7 +13,7 @@
   <li> Match  <a href="{%url 'match_details' x.id %}">{{ x.Competators }}</a></li>
   {% endfor %}  
 </ul>
-<ul>
+<!-- <ul>
   {% for x in mymatches %}
   <li>
     <strong>{{ x.Competetion }}</strong> - {{ x.Season_Start_date }} to {{ x.Season_End_date }}
@@ -43,5 +21,8 @@
     <a href="{% url 'match_details' x.id %}">Details</a>
   </li>
   {% endfor %}
-</ul>
+</ul> -->
+
+
+
 {% endblock %}

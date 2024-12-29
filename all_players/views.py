@@ -25,6 +25,14 @@ def all_teams(request):
 
 def team_details(request, id):
     myteam = get_object_or_404(Team, id=id)
+ 
+    viewed_teams = request.session.get('viewed_teams', [])
+    if id not in viewed_teams:
+        viewed_teams.append(id)
+        if len(viewed_teams) > 10:
+            viewed_teams.pop(0)
+    request.session['viewed_teams'] = viewed_teams 
+
     return render(request, 'all_teams/team_details.html', {'myteam': myteam})
 
 def all_matches(request):
@@ -48,6 +56,19 @@ def viewed_items(request):
     viewed_matches_ids = request.session.get('viewed_matches', [])
     viewed_matches = Match.objects.filter(id__in=viewed_matches_ids)
     return render(request, 'user/viewed_items.html', {'viewed_matches': viewed_matches})
+
+
+def viewed_teams(request):
+    viewed_teams_ids = request.session.get('viewed_teams', [])
+    viewed_teams = Team.objects.filter(id__in=viewed_teams_ids)
+    return render(request, 'user/viewed_teams.html', {'viewed_matches': viewed_teams})
+
+def viewed_players(request):
+    viewed_players_ids = request.session.get('viewed_players', [])
+    viewed_players = Player.objects.filter(id__in=viewed_players_ids)
+    return render(request, 'user/viewed_players.html', {'viewed_player': viewed_players})
+
+
 
 def main(request):
     return render(request, 'main/home.html')

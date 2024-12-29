@@ -129,13 +129,21 @@ def get_player(id: str):
     raise e
   return response.json()
 
-def get_match(id: str):
-  uri = f'https://api.football-data.org/v4/matches/{id}'
+def get_match(competition_id, year: int = 2024):
+  url = f'https://api.football-data.org/v4/teams/{competition_id}/matches/'
   headers = {'X-Auth-Token': API_KEY}
+   
   try:
-    response = requests.get(uri, headers=headers)
+    response = requests.get(url, headers=headers )
     response.raise_for_status()
+    if response.headers.get("Content-Type", "").startswith("application/json"):
+      matches = response.json().get("matches", [])
+      return matches
+    else:
+      logger.error(f"Unexpected response format: {response.text}")
+      raise ValueError("Response is not JSON")
+
   except requests.exceptions.RequestException as e:
     logger.warning(f"failed to fetch matches' {id} data ({str(e)})")
     raise e
-  return response.json()
+ 

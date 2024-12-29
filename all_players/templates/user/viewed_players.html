@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Recently Viewed Players
+{% endblock %}
+
+{% block content %}
+<h1>Your Recently Viewed Players</h1>
+
+{% if viewed_players %}
+<ul>
+    {% for player in viewed_players %}
+    <li>
+        <strong>{{ player.Competetion }}</strong> - {{ player.Competators }}
+        <a class="nav-link" href="{% url 'details' player.id %}">View Details</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You haven't viewed any Players yet.</p>
+{% endif %}
+
+<a class="nav-link" href="{% url 'all_players' %}">Back to All Players</a>
+
+<a class="nav-link" class="btn" href="{% url 'user' %}">Back to User</a>
+{% endblock %}
