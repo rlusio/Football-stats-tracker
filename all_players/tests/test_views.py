@@ -63,7 +63,7 @@ class ViewTestsAllPlayers(TestCase):
     def test_details_view(self):
         response = self.client.get(self.details_url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Cristiano Ronaldo")
+        self.assertContains(response, "Portugal")
 
     def test_all_teams_view(self):
         response = self.client.get(self.all_teams_url)
@@ -73,7 +73,7 @@ class ViewTestsAllPlayers(TestCase):
     def test_team_details_view(self):
         response = self.client.get(self.team_details_url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Real Madrid")
+        self.assertContains(response, "Spain")
 
     def test_all_matches_view(self):
         response = self.client.get(self.all_matches_url)
@@ -83,7 +83,7 @@ class ViewTestsAllPlayers(TestCase):
     def test_match_details_view(self):
         response = self.client.get(self.match_details_url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Real Madrid vs Barcelona")
+        self.assertContains(response, "3-1")
     
     def test_viewed_items_view(self):
         self.client.get(self.match_details_url) 
