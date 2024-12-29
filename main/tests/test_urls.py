@@ -4,5 +4,5 @@ from main.views import home
 
 class TestMainURLs(TestCase):
     def test_main_url(self):
-        url = reverse('home')
+        url = reverse('/main/home')
         self.assertEqual(resolve(url).func, home)

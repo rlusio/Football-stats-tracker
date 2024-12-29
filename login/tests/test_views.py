@@ -8,7 +8,7 @@ class TestLoginViews(TestCase):
         self.register_url = reverse('login:register')
         self.logout_url = reverse('login:logout')
         self.login_url = reverse('login:login')
-        self.home_url = reverse('home')
+        self.home_url = reverse('/main/home')
         self.user = {
             'username': 'Testing1234',
             'password1': 'IgotTooBasicPasw...',
