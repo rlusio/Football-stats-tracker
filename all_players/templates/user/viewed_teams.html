@@ -6,21 +6,21 @@ Recently Viewed Teams
 
 {% block content %}
 <h1>Your Recently Viewed Teams</h1>
-
+<hr class="my-4">
 {% if viewed_teams %}
-<ul>
-    {% for t in viewed_teams %}
-    <li>
-        <strong>{{ t.Competetion }}</strong> - {{ t.Competators }}
-        <a class="nav-link" href="{% url 'team_details' t.id %}">View Details</a>
-    </li>
-    {% endfor %}
-</ul>
+    <ul>
+        {% for team in viewed_teams %}
+        <li>
+            <strong>{{ team.Team_Name }}</strong> - {{ team.Country }}
+            <a href="{% url 'team_details' team.id %}">View Details</a>
+        </li>
+        {% endfor %}
+    </ul>
 {% else %}
-<p>You haven't viewed any teams yet.</p>
+    <p>You haven't viewed any teams yet.</p>
 {% endif %}
 
-<a class="nav-link" href="{% url 'all_teams' %}">Back to All Teams</a>
-
+<a class="nav-link" href="{% url 'all_teams' %}">Back to All Teams</a><br>
 <a class="nav-link" class="btn" href="{% url 'user' %}">Back to User</a>
+
 {% endblock %}

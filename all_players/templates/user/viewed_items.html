@@ -6,7 +6,7 @@ Recently Viewed Matches
 
 {% block content %}
 <h1>Your Recently Viewed Matches</h1>
-
+<hr class="my-4">
 {% if viewed_matches %}
 <ul>
     {% for match in viewed_matches %}
@@ -20,7 +20,7 @@ Recently Viewed Matches
 <p>You haven't viewed any matches yet.</p>
 {% endif %}
 
-<a class="nav-link" href="{% url 'all_matches' %}">Back to All Matches</a>
+<a class="nav-link" href="{% url 'all_matches' %}">Back to All Matches</a><br>
 
 <a class="nav-link" class="btn" href="{% url 'user' %}">Back to User</a>
 {% endblock %}

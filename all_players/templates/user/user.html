@@ -10,31 +10,20 @@
 <h1><strong>{{user.username}}</strong></h1>
 <hr class="my-4">
 <p>
-    Here you can see your last view pages.
+    Here are the pages you recently viewed.
 </p>
 <div class="nav-item">
-    <a class="nav-link" href="{% url 'viewed_players' %}">Recently Viewed Players</a>
+    <a   href="{% url 'viewed_players' %}">Recently Viewed Players</a>
 </div>
-{% if viewed_matches %}
-<ul>
-    {% for match in viewed_matches %}
-    <li>
-        <strong>{{ match.Competetion }}</strong> - {{ match.Competators }}
-        <a class="nav-link" href="{% url 'match_details' match.id %}">View Details</a>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>You haven't viewed any matches yet.</p>
-{% endif %}
-
-
+ 
 <br>
 <div class="nav-item">
-    <a class="nav-link" href="{% url 'viewed_teams' %}">Recently Viewed Teams</a>
+    <a  href="{% url 'viewed_teams' %}">Recently Viewed Teams</a>
 </div>
+ 
 <br>
 <div class="nav-item">
-    <a class="nav-link" href="{% url 'viewed_items' %}">Recently Viewed Matches</a>
+    <a  href="{% url 'viewed_items' %}">Recently Viewed Matches</a>
 </div>
+
 {% endblock %}

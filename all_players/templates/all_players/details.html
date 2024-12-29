@@ -13,6 +13,9 @@ Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
 <p><strong>Market Value:</strong> {{ myplayer.marketValue }}</p>
 
 <p>
-    Back to <a href="{% url 'team_players' myplayer.team.id %}">Players in {{ myplayer.team.Team_Name }}</a>
+    Go to Players in <a href="{% url 'team_players' myplayer.team.id %}"> {{ myplayer.team.Team_Name }}</a>
+ 
+<br> Back to   <a href="{% url 'all_players' %}"> All Players</a>
+
 </p>
 {% endblock %}

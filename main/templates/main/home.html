@@ -36,9 +36,10 @@ Home
 
 {% block content %}
 <h1>Welcome to Football Stats Tracker</h1>
+<hr class="my-4">
 <p>Follow your favourite player, and team!</p>
 {% if user.is_authenticated %}
-    <p>Hello, {{ user.username }}! Explore your stats.</p>
+    <p>Hello, <strong>{{ user.username }}!</strong>  Explore your stats.</p>
 {% else %}
     <p>Please <a href="{% url 'login:login' %}">log in</a> or <a href="{% url 'login:register' %}">register</a> to get started.</p>
 {% endif %}
