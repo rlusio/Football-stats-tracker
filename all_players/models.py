@@ -5,8 +5,8 @@ class Team(models.Model):
     Country = models.CharField(max_length=255, null=False)
     City = models.CharField(max_length=255, null=False)
     marketValue = models.IntegerField(null=True)
-    Number_of_Players = models.IntegerField(null=False)
-    Standings = models.IntegerField(null=False)
+    Number_of_Players = models.IntegerField(null=True)
+    Standings = models.IntegerField(null=True)
     logo_url = models.URLField(null=True, blank=True)
 
 class Player(models.Model):
