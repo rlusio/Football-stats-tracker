@@ -12,7 +12,7 @@ class Team(models.Model):
 class Player(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
-    position = models.CharField(max_length=255)
+    position = models.CharField(max_length=255, null=True, blank=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, default=1)  
     joined_date = models.DateField(null=True, blank=True)
     nationality = models.CharField(max_length=255)
