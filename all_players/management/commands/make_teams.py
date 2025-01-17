@@ -41,7 +41,10 @@ class Command(BaseCommand):
                                 'dateOfBirth': player_info.get("dateOfBirth"),
                                 'nationality': player_info.get("nationality", "Unknown"),
                                 'shirtNumber': player_info.get("shirtNumber"),
-                            }
+                                'marketValue': player_info.get("marketValue",None),  
+                                'goals': player_info.get("goals", 0),  
+                                'assists': player_info.get("assists", 0),  
+                                'appearances': player_info.get("appearances", 0),                              }
                         )
 
                     
