@@ -21,27 +21,31 @@ class APITestCase(TestCase):
             '2001': 'La Liga'
         }
         self.assertEqual(result, expected_result)
-    
+
     @patch('scripts.api.requests.get')
-    def test_get_current_season(self, mock_get):
-        with patch('scripts.api.get_competitions_ids') as mock_get_ids:
-            mock_get_ids.return_value = {'2000': 'Premier League'}
-            
-            mock_response = Mock()
-            mock_response.json.return_value = {
-                'currentSeason': {
-                    'startDate': '2023-08-12',
-                    'endDate': '2024-05-19'
-                }
+    @patch('scripts.api.get_competitions_ids')
+    def test_get_current_season(self, mock_get_competitions_ids, mock_requests_get):
+        mock_get_competitions_ids.return_value = {"2014": "aaaa"}
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            "currentSeason": {
+                "id": 2292,
+                "startDate": "2024-08-18",
+                "endDate": "2025-05-25",
+                "currentMatchday": 20,
+                "winner": None
             }
-            mock_response.raise_for_status = Mock()
-            mock_get.return_value = mock_response
-            result = get_current_season('2000')
-            expected_result = {
-                'startDate': '2023-08-12',
-                'endDate': '2024-05-19'
-            }
-            self.assertEqual(result, expected_result)
+        }
+        mock_requests_get.return_value = mock_response
+        result = get_current_season("2014")
+        expected_result = {
+            "id": 2292,
+            "startDate": "2024-08-18",
+            "endDate": "2025-05-25",
+            "currentMatchday": 20,
+            "winner": None
+        }
+        self.assertEqual(result, expected_result)
     
     @patch('scripts.api.requests.get')
     def test_get_competition_teams(self, mock_get):
