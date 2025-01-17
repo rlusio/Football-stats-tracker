@@ -11,7 +11,12 @@ Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
 <p><strong>Nationality:</strong> {{ myplayer.nationality }}</p>
 <p><strong>Shirt Number:</strong> {{ myplayer.shirtNumber }}</p>
 <p><strong>Market Value:</strong> {{ myplayer.marketValue }}</p>
-
+<p><strong>Market Value:</strong> 
+    {% if myplayer.marketValue %}
+        {{ myplayer.marketValue }} €
+    {% else %}
+        Not Available
+    {% endif %}
 <p>
     Go to Players in <a href="{% url 'team_players' myplayer.team.id %}"> {{ myplayer.team.Team_Name }}</a>
  
