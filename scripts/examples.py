@@ -20,5 +20,13 @@ def team_players():
     t = get_team_players('112')
     print(t)
 
+def player_matches():
+    t = get_player_stats('16275')
+    print(t)
+
+def match_stats():
+    t = get_match_stats('2021', 2024)
+    print(t)
+    
 if __name__ == "__main__":
-    team_players()
+    player_matches()

@@ -109,6 +109,7 @@ def get_team_players(id: str) -> dict:
                 "dateOfBirth": player.get("dateOfBirth", None),
                 "nationality": player.get("nationality", "Unknown"),
                 "shirtNumber": player.get("shirtNumber", None),
+
             }
             for player in squad
         }
@@ -129,12 +130,53 @@ def get_player(id: str):
     raise e
   return response.json()
 
-def get_match(competition_id, year: int = 2024):
-  url = f'https://api.football-data.org/v4/teams/{competition_id}/matches/'
-  headers = {'X-Auth-Token': API_KEY}
-   
+def get_players_matches(id: str):
+  uri = f'https://api.football-data.org/v4/persons/{id}/matches'
+  headers = {'X-Auth-Token': API_KEY} 
   try:
-    response = requests.get(url, headers=headers )
+    response = requests.get(uri, headers=headers)
+    response.raise_for_status()
+  except requests.exceptions.RequestException as e:
+    logger.warning(f"failed to fetch players' {id} data ({str(e)})")
+    raise e
+  return response.json()
+  
+def get_player_stats(id: str):
+    data = get_players_matches(id)
+    stats = []
+    player_info = {
+        "player": {
+            "name": data["person"]["name"],
+            "date_of_birth": data["person"]["dateOfBirth"],
+            "position": data["person"]["position"],
+            "nationality": data["person"]["nationality"],
+        }}
+    stats.append(player_info)
+    for match in data["matches"]:
+        season = {
+            "start_date": match["season"]["startDate"],
+            "end_date": match["season"]["endDate"],
+        }
+        match_results = {
+            "home_team": match["homeTeam"]["name"],
+            "away_team": match["awayTeam"]["name"],
+            "winner": match.get("season", {}).get("winner", {}).get("name", "No winner") if match.get("season", {}).get("winner") else "No winner",
+            "duration": match["score"]["duration"],
+            "half_time_result": match["score"]["halfTime"],
+            "final_result": match["score"]["fullTime"],
+            "extra_time_result": match["score"].get("extraTime", None),
+            "penalties_result": match["score"].get("penalties", None),
+        }
+        stats.append(season)
+        stats.append(match_results)
+    return stats
+    
+
+def get_match(competition_id, year: int = 2024):
+  uri = f'https://api.football-data.org/v4/teams/{competition_id}/matches/'
+  headers = {'X-Auth-Token': API_KEY}
+  try:
+    response = requests.get(uri, headers=headers )
     response.raise_for_status()
     if response.headers.get("Content-Type", "").startswith("application/json"):
       matches = response.json().get("matches", [])
@@ -146,4 +188,45 @@ def get_match(competition_id, year: int = 2024):
   except requests.exceptions.RequestException as e:
     logger.warning(f"failed to fetch matches' {id} data ({str(e)})")
     raise e
- 
+
+def get_particular_match(match_id):
+  uri = f'https://api.football-data.org/v4/matches/{match_id}'
+  headers = {'X-Auth-Token': API_KEY}
+  try:
+    response = requests.get(uri, headers=headers)
+    response.raise_for_status()
+  except requests.exceptions.RequestException as e:
+    logger.warning(f"Failed to fetch match details: {response.status_code} {response.text}")
+    raise e
+  return response.json()
+def get_match_stats(competition_id: str, year: int = 2024) -> list:
+  matches = get_match(competition_id, year)
+  stats = []
+  for match in matches:
+      match_stats = get_particular_match(match["id"])
+      match_data = {
+          "home_team": match["homeTeam"]["name"],
+          "away_team": match["awayTeam"]["name"],
+          "date": match["utcDate"],
+          "half_time_score": match["score"]["halfTime"],
+          "score": match["score"]["fullTime"],
+          "half_time_score": match["score"]["halfTime"],
+          "extra_time_result": match["score"].get("extraTime", None),
+          "penalties_result": match["score"].get("penalties", None),
+
+
+      }
+      goal_details = []
+      for goal in match_stats.get("goals", []):
+          goal_details.append({
+              "minute": goal["minute"],
+              "type": goal["type"],
+              "scorer": goal["scorer"]["name"],
+              "team" : goal["team"]["name"],
+              "assist": goal.get("assist", {}).get("name"),
+          })
+      match_data["goal_details"] = goal_details
+      match_data["home_team_statistics"] = match_stats.get("homeTeam", {}).get("statistics", {})
+      match_data["away_team_statistics"] = match_stats.get("awayTeam", {}).get("statistics", {})
+      stats.append(match_data)
+  return stats  
