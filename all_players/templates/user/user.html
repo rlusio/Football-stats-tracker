@@ -9,21 +9,6 @@
 
 <h1><strong>{{user.username}}</strong></h1>
 <hr class="my-4">
-<p>
-    Here are the pages you recently viewed.
-</p>
-<div class="nav-item">
-    <a   href="{% url 'viewed_players' %}">Recently Viewed Players</a>
-</div>
- 
-<br>
-<div class="nav-item">
-    <a  href="{% url 'viewed_teams' %}">Recently Viewed Teams</a>
-</div>
- 
-<br>
-<div class="nav-item">
-    <a  href="{% url 'viewed_items' %}">Recently Viewed Matches</a>
-</div>
+
 
 {% endblock %}

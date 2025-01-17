@@ -10,20 +10,15 @@ class Command(BaseCommand):
     help = "Fetch and save matches from Football-Data API"
 
     def handle(self, *args, **kwargs):
-        competition_id = "2021"  # Premier League
-        year = 2024  # Season year
-
+        competition_id = "2021"  
+        year = 2024   
         try:
-            # Pobieranie meczów
             matches = get_match(competition_id, year)
             self.stdout.write(self.style.SUCCESS(f"Fetched {len(matches)} matches."))
-
             for match in matches:
                 try:
-                    # Przetwarzanie każdego meczu
                     home_team_name = match['homeTeam']['name']
                     away_team_name = match['awayTeam']['name']
-
                     Match.objects.update_or_create(
                         Competators=f"{home_team_name} vs {away_team_name}",
                         defaults={
@@ -38,11 +33,10 @@ class Command(BaseCommand):
                     self.stdout.write(
                         self.style.SUCCESS(f"Processed match: {home_team_name} vs {away_team_name}")
                     )
-                    time.sleep(2)  # Przerwa między zapytaniami
+                    time.sleep(2)   
                 except Exception as e:
                     logger.warning(f"Failed to process match: {match.get('homeTeam', {}).get('name')} vs {match.get('awayTeam', {}).get('name')}: {e}")
                     self.stdout.write(self.style.WARNING(f"Failed to process match due to error."))
-
         except Exception as e:
             logger.error(f"Failed to fetch matches: {e}")
             self.stdout.write(self.style.ERROR(f"Error fetching matches: {e}"))

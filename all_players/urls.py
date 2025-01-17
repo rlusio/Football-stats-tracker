@@ -13,7 +13,4 @@ urlpatterns = [
     path('all_matches/', views.all_matches, name='all_matches'),  
     path('all_matches/match_details/<int:id>/', views.match_details, name='match_details'),  
     path('user/', views.user, name='user'),
-    path('user/viewed_items/', views.viewed_items, name='viewed_items'),
-    path('user/viewed_teams/', views.viewed_teams, name='viewed_teams'),
-    path('user/viewed_players/', views.viewed_players, name='viewed_players'),
 ]
