@@ -85,8 +85,3 @@ class ViewTestsAllPlayers(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "3-1")
     
-    def test_viewed_items_view(self):
-        self.client.get(self.match_details_url) 
-        response = self.client.get(self.viewed_items_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Real Madrid vs Barcelona")

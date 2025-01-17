@@ -1,17 +1,35 @@
 {% extends "base.html" %}
 
 {% block title %}
-  All players
+  All Players
 {% endblock %}
 
 {% block content %}
 <h1>All Players</h1>
+
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link {% if request.path == '/all_players/' %}active{% endif %}" href="{% url 'all_players' %}">All Players</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.path == '/all_players/top-market-value/' %}active{% endif %}" href="{% url 'top_market_value' %}">By Market Value</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.path == '/all_players/top-performance-stats/' %}active{% endif %}" href="{% url 'top_performance' %}">By Performance Stats</a>
+    </li>
+</ul>
+
+
 <ul>
    {% for player in players %}
     <li>
         <a href="{% url 'details' player.id %}">{{ player.firstname }} {{ player.lastname }}</a> - {{ player.position }}
+        {% if player.marketValue %}
+            (Market Value: {{ player.marketValue }} €)
+        {% endif %}
     </li>
-    {% endfor %}
+   {% endfor %}
 </ul>
 
 

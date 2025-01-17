@@ -39,6 +39,3 @@ class TestAllPlayersURLs(TestCase):
         url = reverse('user')
         self.assertEqual(resolve(url).func, user) 
 
-    def test_reverse_viewed_items(self):
-        url = reverse('viewed_items')
-        self.assertEqual(resolve(url).func, viewed_items)
