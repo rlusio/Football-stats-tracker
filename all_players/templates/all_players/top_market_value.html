@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Players by Market Value
+{% endblock %}
+
+{% block content %}
+<h1>Players By Market Value</h1>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'all_players' %}">All Players</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'top_market_value' %}">By Market Value</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'top_performance' %}">By Performance Stats</a>
+    </li>
+</ul>
+
+<h3>Over $20M</h3>
+<ul>
+   {% for player in above_20m %}
+    <li>
+        {{ player.firstname }} {{ player.lastname }} - 
+        {% if player.marketValue and player.marketValue > 0 %}
+            ${{ player.marketValue }}
+        {% else %}
+            0$
+        {% endif %}
+    </li>
+   {% endfor %}
+</ul>
+
+
+<h3>$5M–$20M</h3>
+<ul>
+   {% for player in between_5m_20m %}
+    <li>
+        {{ player.firstname }} {{ player.lastname }} - 
+        {% if player.marketValue and player.marketValue > 0 %}
+            ${{ player.marketValue }}
+        {% else %}
+            0$
+        {% endif %}
+    </li>
+   {% endfor %}
+</ul>
+
+<h3>Below $5M</h3>
+<ul>
+   {% for player in below_5m %}
+    <li>
+        {{ player.firstname }} {{ player.lastname }} - 
+        {% if player.marketValue and player.marketValue > 0 %}
+            ${{ player.marketValue }}
+        {% else %}
+            0$
+        {% endif %}
+    </li>
+   {% endfor %}
+</ul>
+
+
+{% endblock %}
