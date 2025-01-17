@@ -49,26 +49,24 @@ def get_current_season(id: str) -> dict:
   return current_season
   
 def get_competition_teams(competition_id: str, year: int = 2024) -> list:
-   
     uri = f'https://api.football-data.org/v4/competitions/{competition_id}/teams?season={year}'
     headers = {'X-Auth-Token': API_KEY}
     try:
         response = requests.get(uri, headers=headers)
-        response.raise_for_status()  
+        response.raise_for_status()
+
+        logger.info(f"Response for competition {competition_id}: {response.json()}")
+
         teams = response.json().get('teams', [])
         if not teams:
             logger.warning(f"No teams found for competition {competition_id} in season {year}.")
             raise EmptyDataError("No teams found.")
         
-        logger.info(f"Successfully fetched {len(teams)} teams for competition {competition_id}.")
         return teams
-    
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to fetch teams for competition {competition_id}: {str(e)}")
         raise e
-    except KeyError as e:
-        logger.error(f"Unexpected API response structure: {str(e)}")
-        raise EmptyDataError("Unexpected response structure.")
+
 
 def get_competition_standings(id: str, year: int=2024, type: str="TOTAL") -> dict:
   try:
@@ -101,6 +99,9 @@ def get_team_players(id: str) -> dict:
     try:
         response = requests.get(uri, headers=headers)
         response.raise_for_status()
+
+        logger.info(f"Response for team {id}: {response.json()}")
+
         squad = response.json().get('squad', [])
         result = {
             player["id"]: {
@@ -109,6 +110,10 @@ def get_team_players(id: str) -> dict:
                 "dateOfBirth": player.get("dateOfBirth", None),
                 "nationality": player.get("nationality", "Unknown"),
                 "shirtNumber": player.get("shirtNumber", None),
+                "marketValue": player.get("marketValue", 0),  
+                "goals": player.get("goals", 0),  
+                "assists": player.get("assists", 0), 
+                "appearances": player.get("appearances", 0), 
             }
             for player in squad
         }
@@ -117,6 +122,7 @@ def get_team_players(id: str) -> dict:
     except requests.exceptions.RequestException as e:
         logger.warning(f"Failed to fetch players for team {id}: {e}")
         raise e
+
 
 def get_player(id: str):
   uri = f'https://api.football-data.org/v4/persons/{id}'
