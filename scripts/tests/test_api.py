@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, Mock
 from django.test import TestCase
-from scripts.api import *
+import scripts.api as api
 
 class APITestCase(TestCase):
     @patch('scripts.api.requests.get')
@@ -15,7 +15,7 @@ class APITestCase(TestCase):
         }
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
-        result = get_competitions_ids()
+        result = api.get_competitions_ids()
         expected_result = {
             '2000': 'Premier League',
             '2001': 'La Liga'
@@ -37,7 +37,7 @@ class APITestCase(TestCase):
             }
         }
         mock_requests_get.return_value = mock_response
-        result = get_current_season("2014")
+        result = api.get_current_season("2014")
         expected_result = {
             "id": 2292,
             "startDate": "2024-08-18",
@@ -58,7 +58,7 @@ class APITestCase(TestCase):
         }
         mock_response.raise_for_status = Mock()
         mock_get.return_value = mock_response
-        result = get_competition_teams('2000', 2024)
+        result = api.get_competition_teams('2000', 2024)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]['name'], 'Real Madrid')
 
@@ -73,7 +73,7 @@ class APITestCase(TestCase):
             ]
         }
         mock_requests_get.return_value = mock_response
-        result = get_competition_standings("2000")
+        result = api.get_competition_standings("2000")
         expected_result = [{"team": {"id": 1, "name": "Team A"}}]
         self.assertEqual(result, expected_result)
 
@@ -89,10 +89,6 @@ class APITestCase(TestCase):
                     "dateOfBirth": "1990-01-01",
                     "nationality": "Ukraine",
                     "shirtNumber": 10,
-                    'marketValue': 10, 
-                    'goals': 0,
-                    'assists': 1,
-                    'appearances': 22,
                 },
                 {
                     "id": 2,
@@ -101,15 +97,12 @@ class APITestCase(TestCase):
                     "dateOfBirth": "1987-02-19",
                     "nationality": "Brasil",
                     "shirtNumber": 3,
-                    'marketValue': 10000000, 
-                    'goals': 14,
-                    'assists': 2,
-                    'appearances': 25,
                 }
             ]
         }
+        mock_response.status_code = 200
         mock_requests_get.return_value = mock_response
-        result = get_team_players("1234")
+        result = api.get_team_players("1234")
         expected_result = {
             1: {
                 "name": "Daniel Krabus",
@@ -117,10 +110,6 @@ class APITestCase(TestCase):
                 "dateOfBirth": "1990-01-01",
                 "nationality": "Ukraine",
                 "shirtNumber": 10,
-                'marketValue': 10, 
-                'goals': 0,
-                'assists': 1,
-                'appearances': 22,
             },
             2: {
                 "name": "Roberto Carlos",
@@ -128,10 +117,6 @@ class APITestCase(TestCase):
                 "dateOfBirth": "1987-02-19",
                 "nationality": "Brasil",
                 "shirtNumber": 3,
-                'marketValue': 10000000, 
-                'goals': 14,
-                'assists': 2,
-                'appearances': 25,
             }
         }
         self.assertEqual(result, expected_result)
@@ -148,6 +133,6 @@ class APITestCase(TestCase):
             "shirtNumber": 10
         }
         mock_requests_get.return_value = mock_response
-        result = get_player("1")
+        result = api.get_player("1")
         expected_result = mock_response.json.return_value
         self.assertEqual(result, expected_result)
