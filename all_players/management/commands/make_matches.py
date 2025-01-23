@@ -22,12 +22,16 @@ class Command(BaseCommand):
                     Match.objects.update_or_create(
                         Competators=f"{home_team_name} vs {away_team_name}",
                         defaults={
-                            'Match_Place': match.get('venue', 'Unknown'),
+                            'Match_Place': match['area']['name'],
                             'Competetion': match['competition']['name'],
+                            #'Match_Date': match['utcDate'],
                             'Season_Start_date': match['season']['startDate'],
                             'Season_End_date': match['season']['endDate'],
                             'Score': f"{match['score']['fullTime']['home']} - {match['score']['fullTime']['away']}",
+                            'Score details': f"{match['score']['halfTime']['home']} - {match['score']['halfTime']['away']}",
+                            'Referees': f"Name: {match['referees']['name']}, Nationality:  {match['referees']['nationality']}",
                             'Status': match['status'],
+
                         }
                     )
                     self.stdout.write(

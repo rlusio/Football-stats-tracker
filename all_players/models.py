@@ -28,7 +28,8 @@ class Player(models.Model):
 
     
 class Match(models.Model):
-    Competators = models.CharField(max_length=255, null=False)  
+    Competators = models.CharField(max_length=255, null=False) 
+    #Match_Date = models.DateTimeField(null=False)
     Match_Place = models.CharField(max_length=255, null=False)  
     Competetion = models.CharField(max_length=255, null=False)  
     Season_Start_date = models.DateField(null=False)
