@@ -3,10 +3,9 @@ import logging
 import os
 import time
 from dotenv import load_dotenv, find_dotenv
+
 load_dotenv(find_dotenv())
-
 API_KEY = os.getenv('API_KEY')
-
 logger = logging.getLogger(__name__)
 
 class EmptyDataError(Exception):
@@ -201,6 +200,7 @@ def get_particular_match(match_id):
     logger.warning(f"Failed to fetch match details: {response.status_code} {response.text}")
     raise e
   return response.json()
+
 def get_match_stats(competition_id: str, year: int = 2024) -> list:
   matches = get_match(competition_id, year)
   stats = []
@@ -215,8 +215,6 @@ def get_match_stats(competition_id: str, year: int = 2024) -> list:
           "half_time_score": match["score"]["halfTime"],
           "extra_time_result": match["score"].get("extraTime", None),
           "penalties_result": match["score"].get("penalties", None),
-
-
       }
       goal_details = []
       for goal in match_stats.get("goals", []):
