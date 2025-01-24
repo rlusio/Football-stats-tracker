@@ -19,19 +19,24 @@ class Command(BaseCommand):
                 try:
                     home_team_name = match['homeTeam']['name']
                     away_team_name = match['awayTeam']['name']
+                    referees = match.get('referees', [])
+                    referee_details = ", ".join(
+                        [f"Name: {ref.get('name', 'Unknown')}, Nationality: {ref.get('nationality', 'Unknown')}" for ref in referees]
+                    )
                     Match.objects.update_or_create(
                         Competators=f"{home_team_name} vs {away_team_name}",
                         defaults={
-                            'Match_Place': match['area']['name'],
-                            'Competetion': match['competition']['name'],
-                            #'Match_Date': match['utcDate'],
-                            'Season_Start_date': match['season']['startDate'],
-                            'Season_End_date': match['season']['endDate'],
-                            'Score': f"{match['score']['fullTime']['home']} - {match['score']['fullTime']['away']}",
-                            'Score details': f"{match['score']['halfTime']['home']} - {match['score']['halfTime']['away']}",
-                            'Referees': f"Name: {match['referees']['name']}, Nationality:  {match['referees']['nationality']}",
-                            'Status': match['status'],
-
+                            'Match_Place': match.get('area', {}).get('name', 'Unknown'),
+                            'Competetion': match.get('competition', {}).get('name', 'Unknown'),
+                            'Match_Date': match.get('utcDate', None),
+                            'Season_Start_date': match.get('season', {}).get('startDate', None),
+                            'Season_End_date': match.get('season', {}).get('endDate', None),
+                            'Score': f"{match.get('score', {}).get('fullTime', {}).get('home', 0)} - {match.get('score', {}).get('fullTime', {}).get('away', 0)}",
+                            'Score_Details': f"{match.get('score', {}).get('halfTime', {}).get('home', 0)} - {match.get('score', {}).get('halfTime', {}).get('away', 0)}",
+                            'Referees': referee_details,
+                            'Status': match.get('status', 'Unknown'),
+                            'Stage': match.get('stage', 'Unknown'),
+                            'Last_Updated': match.get('lastUpdated', None),
                         }
                     )
                     self.stdout.write(
