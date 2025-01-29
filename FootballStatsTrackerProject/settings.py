@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'FootballStatsTrackerProject.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse("postgresql://football_stats_tracker_user:kF1QusNOQ9MKB5VdhMWLldIPs21oRhcV@dpg-cu98fmi3esus73b1lec0-a.oregon-postgres.render.com/football_stats_tracker")
 }
-DATABASES['default'] = dj_database_url.parse("postgresql://football_stats_tracker_user:kF1QusNOQ9MKB5VdhMWLldIPs21oRhcV@dpg-cu98fmi3esus73b1lec0-a.oregon-postgres.render.com/football_stats_tracker")
 
 
 # Password validation

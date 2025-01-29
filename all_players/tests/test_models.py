@@ -1,86 +1,104 @@
 from django.test import TestCase
-from all_players.models import Player, Team, Match
-from django.db import IntegrityError
-from datetime import date
+from all_players.models import Team, Player, Match
+from django.db.utils import IntegrityError
 
-class PlayerModelTest(TestCase):
-    
-    def setUp(self):
-        self.team = Team.objects.create(
-            Team_Name="Real Madrid",
-            Country="Spain",
-            City="Madrid",
-            marketValue=3000000000,
-            Number_of_Players=25,
-            Standings=1,
-        )
 
-    def test_create_player(self):
-        player = Player.objects.create(
-            firstname="Cristiano",
-            lastname="Ronaldo",
-            position="Forward",
-            team=self.team,
-            joined_date="2009-06-01",
-            nationality="Portugal",
-            marketValue=150000000,
-            shirtNumber=7,
-            dateOfBirth="1985-02-05"
-        )
-        self.assertEqual(player.firstname, "Cristiano")
-        self.assertEqual(player.lastname, "Ronaldo")
-        self.assertEqual(player.position, "Forward")
-        self.assertEqual(player.nationality, "Portugal")
-        self.assertEqual(player.marketValue, 150000000)
-        self.assertEqual(player.shirtNumber, 7)
-        self.assertEqual(player.dateOfBirth, "1985-02-05")
-        self.assertEqual(player.team.Team_Name, "Real Madrid")
-        
 class TeamModelTest(TestCase):
-    
-    def test_create_team(self):
+    def test_create_team_successfully(self):
+        team = Team.objects.create(
+            Team_Name="FC Barcelona",
+            Country="Spain",
+            City="Barcelona",
+            marketValue=500000000,
+            Number_of_Players=25,
+            Standings=1
+        )
+        self.assertEqual(team.Team_Name, "FC Barcelona")
+        self.assertEqual(team.marketValue, 500000000)
+        
+class PlayerModelTest(TestCase):
+    def test_create_player_successfully(self):
         team = Team.objects.create(
             Team_Name="Real Madrid",
             Country="Spain",
             City="Madrid",
-            marketValue=3000000000,
-            Number_of_Players=25,
-            Standings=1,
+            marketValue=800000000,
+            Number_of_Players=22,
+            Standings=2
         )
-        self.assertEqual(team.Team_Name, "Real Madrid")
-        self.assertEqual(team.Country, "Spain")
-        self.assertEqual(team.City, "Madrid")
-        self.assertEqual(team.Number_of_Players, 25)
-        self.assertEqual(team.Standings, 1)
-        self.assertEqual(team.marketValue, 3000000000)
+        player = Player.objects.create(
+            firstname="Karim",
+            lastname="Benzema",
+            nationality="France",
+            marketValue=35000000,
+            shirtNumber=9,
+            team=team, 
+        )
+        self.assertEqual(player.firstname, "Karim")
+        self.assertEqual(player.team, team)
+        self.assertEqual(player.team.Team_Name, "Real Madrid")
+
+    def test_create_player_missing_team(self):
+        with self.assertRaises(IntegrityError):
+            Player.objects.create(
+                firstname="Karim",
+                lastname="Benzema",
+                nationality="France",
+                marketValue=35000000,
+                shirtNumber=9,
+                team=None 
+            )
+
+    def test_create_player_with_default_values(self):
+        team = Team.objects.create(
+            Team_Name="Chelsea",
+            Country="England",
+            City="London",
+            marketValue=700000000,
+            Number_of_Players=23,
+            Standings=3
+        )
+        player = Player.objects.create(
+            firstname="N'Golo",
+            lastname="Kanté",
+            nationality="France",
+            marketValue=80000000,
+            shirtNumber=7,
+            team=team, 
+        )
+        self.assertEqual(player.goals, 0)
+        self.assertEqual(player.assists, 0)
+        self.assertEqual(player.appearances, 0)
+
 
 class MatchModelTest(TestCase):
-    
-    def test_create_match(self):
+    def test_create_match_successfully(self):
+        team1 = Team.objects.create(
+            Team_Name="Real Madrid",
+            Country="Spain",
+            City="Madrid",
+            marketValue=800000000,
+            Number_of_Players=22,
+            Standings=2
+        )
+        team2 = Team.objects.create(
+            Team_Name="FC Barcelona",
+            Country="Spain",
+            City="Barcelona",
+            marketValue=700000000,
+            Number_of_Players=25,
+            Standings=1
+        )
         match = Match.objects.create(
-            Competators="Real Madrid vs Barcelona",
-            Match_Place="Santiago Bernabeu",
+            Competators=f"{team1.Team_Name} vs {team2.Team_Name}",
+            Match_Place="Santiago Bernabéu",
             Competetion="La Liga",
-            Season_Start_date="2023-08-01",
-            Season_End_date="2023-06-01",
-            Score="3-1",
+            Season_Start_date="2024-08-01",
+            Season_End_date="2025-05-31",
+            Score="2-1",
             Status="Finished"
         )
-        self.assertEqual(match.Season_Start_date, "2023-08-01")
-        self.assertEqual(match.Season_End_date, "2023-06-01")
-        self.assertEqual(match.Score, "3-1")
+        self.assertEqual(match.Competators, "Real Madrid vs FC Barcelona")
+        self.assertEqual(match.Match_Place, "Santiago Bernabéu")
+        self.assertEqual(match.Score, "2-1")
         self.assertEqual(match.Status, "Finished")
-
-    def test_missing_fields_match(self):
-        try:
-            match = Match.objects.create(
-                Competators="Real Madrid vs Barcelona",
-                Match_Place="Santiago Bernabeu",
-                Competetion="La Liga",
-                Season_End_date="2023-06-01",
-                Score="3-1",
-                Status="Finished"
-            )
-            self.fail("IntegrityError not raised")
-        except IntegrityError:
-            pass

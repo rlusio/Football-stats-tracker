@@ -4,16 +4,6 @@ from all_players.models import Player, Team, Match
 
 class ViewTestsAllPlayers(TestCase):
     def setUp(self):
-        self.home_url = reverse('home')
-        self.all_players_url = reverse('all_players')
-        self.team_players_url = reverse('team_players', kwargs={'team_id': 1})
-        self.all_matches_url = reverse('all_matches')
-        self.all_teams_url = reverse('all_teams')
-        self.details_url = reverse('details', kwargs={'id': 1})
-        self.team_details_url = reverse('team_details', kwargs={'id': 1})
-        self.match_details_url = reverse('match_details', kwargs={'id': 1})
-        self.viewed_items_url = reverse('viewed_items')
-
         self.team = Team.objects.create(
             Team_Name="Real Madrid",
             Country="Spain",
@@ -22,7 +12,6 @@ class ViewTestsAllPlayers(TestCase):
             Standings=1,
             marketValue=3000000000
         )
-        
         self.player = Player.objects.create(
             firstname="Cristiano",
             lastname="Ronaldo",
@@ -34,16 +23,23 @@ class ViewTestsAllPlayers(TestCase):
             shirtNumber=7,
             dateOfBirth="1985-02-05"
         )
-        
         self.match = Match.objects.create(
             Competators="Real Madrid vs Barcelona",
             Match_Place="Santiago Bernabeu",
             Competetion="La Liga",
             Season_Start_date="2023-08-01",
-            Season_End_date="2023-06-01",
+            Season_End_date="2024-06-01",
             Score="3-1",
             Status="Finished"
         )
+        self.home_url = reverse('home')
+        self.all_players_url = reverse('all_players')
+        self.team_players_url = reverse('team_players', kwargs={'team_id': self.team.id})
+        self.all_matches_url = reverse('all_matches')
+        self.all_teams_url = reverse('all_teams')
+        self.details_url = reverse('details', kwargs={'id': self.player.id})
+        self.team_details_url = reverse('team_details', kwargs={'id': self.team.id})
+        self.match_details_url = reverse('match_details', kwargs={'id': self.match.id})
 
     def test_main_view(self):
         response = self.client.get(self.home_url)
@@ -84,4 +80,3 @@ class ViewTestsAllPlayers(TestCase):
         response = self.client.get(self.match_details_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "3-1")
-    

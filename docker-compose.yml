@@ -2,7 +2,7 @@ services:
   web:
     build: .
     container_name: football-tracker
-    command: python manage.py runserver 0.0.0.0:8000
+    command: sh -c "python down_from_google_drive.py && python manage.py migrate && gunicorn FootballStatsTrackerProject.wsgi:application -b 0.0.0.0:${PORT:-8000}"
     ports:
       - "8000:8000"
     volumes:
