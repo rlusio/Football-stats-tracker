@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 EXPOSE 8000
 
-CMD ["gunicorn","FootballStatsTrackerProject.wsgi" , "python", "manage.py", "runserver", "127.0.0.1:8000"]
+CMD ["sh", "-c", "python down_from_google_drive.py && gunicorn FootballStatsTrackerProject.wsgi:application -b 127.0.0.1:8000"]
