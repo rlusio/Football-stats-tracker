@@ -9,7 +9,12 @@
 <p><strong>Competitors:</strong> {{ mymatch.Competators }}</p>
 <p><strong>Match Place:</strong> {{ mymatch.Match_Place }}</p>
 <p><strong>Score:</strong> {{ mymatch.Score }}</p>
+<p><strong>Half-time score:</strong> {{ mymatch.Score_Details }} </p>
 <p><strong>Status:</strong> {{ mymatch.Status }} </p>
 <p><strong>Season:</strong> {{ mymatch.Season_Start_date }} to {{ mymatch.Season_End_date }}</p>
+<p><strong>Match Date:</strong> {{ mymatch.Match_Date }} </p>
+<p><strong>Referees:</strong> {{ mymatch.Referees }} </p>
+<p><strong>Stage:</strong> {{ mymatch.Stage }} </p>
+<p><strong>Last updated:</strong> {{ mymatch.Last_Updated }} </p>
 <a href="{% url 'all_matches' %}">Back to All Matches</a>
 {% endblock %}

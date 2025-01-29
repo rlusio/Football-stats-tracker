@@ -29,10 +29,23 @@ class Player(models.Model):
     
 class Match(models.Model):
     Competators = models.CharField(max_length=255, null=False) 
-    #Match_Date = models.DateTimeField(null=False)
+    Match_Date = models.DateTimeField(null=True, blank=True) 
     Match_Place = models.CharField(max_length=255, null=False)  
     Competetion = models.CharField(max_length=255, null=False)  
     Season_Start_date = models.DateField(null=False)
     Season_End_date = models.DateField(null=False)  
     Score = models.CharField(max_length=255, null=True)
+    Score_Details = models.CharField(max_length=20, default="0 - 0")
     Status = models.CharField(max_length=255, null=False)
+    Referees = models.TextField(null=True, blank=True)
+    Stage = models.CharField(max_length=50, null=True, blank=True)
+    Last_Updated = models.DateTimeField(null=True, blank=True) 
+    def __str__(self):
+        return f"{self.Competators} - {self.Match_Date}"
+
+class Competitions(models.Model):
+    Competitions = models.CharField(max_length=255, null=False)
+   
+
+
+    
