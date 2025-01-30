@@ -100,3 +100,47 @@ a:hover {
     background-color: #555; 
     transform: scale(1.05); 
 }
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 60%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #333; 
+    color: white; 
+    border: 2px solid #555; 
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.search-bar::placeholder {
+    color: #bbb; 
+}
+
+.search-bar:focus {
+    border-color: #777; 
+}
+
+.search-btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #555; 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.search-btn:hover {
+    background-color: #777; 
+    transform: scale(1.05);
+}
