@@ -60,6 +60,7 @@ class Match(models.Model):
 
 class Competitions(models.Model):
     Competitions = models.CharField(max_length=255, null=False)
+    season = models.IntegerField(null=True, blank=True)
    
 class Standing(models.Model):
     season = models.IntegerField()  

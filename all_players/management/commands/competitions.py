@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 reader = csv.DictReader(file)  
                 for row in reader:
                     c = row.get('Competition', 'Unknown')
-                    Competitions.objects.update_or_create(Competitions = ['Competition'])
+                    Competitions.objects.update_or_create(Competitions = ['Competition'],season = ['id'])
                     self.stdout.write( self.style.SUCCESS(f"Processed {c}"))
         except Exception as e:
             logger.error(f"Failed to load matches from file: {e}")

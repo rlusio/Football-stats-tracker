@@ -9,10 +9,11 @@ Details about {{ myteam.Team_Name }}
 <img src="{{ myteam.logo_url }}" alt="Logo for {{ myteam.Team_Name }}" style="width: 100px; height: 100px;">
 <p><strong>Country:</strong> {{ myteam.Country }}</p>
 <p><strong>Stadium:</strong> {{ myteam.City }}</p>
-<p><strong>Market Value:</strong> {{ myteam.marketValue }}</p>
-<p><strong>Number of Players:</strong> {{ myteam.Number_of_Players }}</p>
 <p><strong>Position in league:</strong> {{ mystandings.position }}</p>
 <p><strong>Played games:</strong> {{ mystandings.played_games }}</p>
+<p><strong>Number of Players:</strong> {{ num_players }}</p>
+<p><strong>Total Goals Scored:</strong> {{ total_goals|default:"0" }}</p>
+<p><strong>Average Player Age:</strong> {{ avg_age }}</p>
 <!--<p><strong>Standings:</strong> {{ myteam.Standings }}</p>-->
 <p>
     <a href="{% url 'team_players' myteam.id %}">View All Players</a>

@@ -1,6 +1,7 @@
 from all_players.models import Player, Team, Match, Standing
 from django.shortcuts import render, get_object_or_404
-
+from django.db.models import Count, Avg, Sum
+from datetime import date
 
 def top_market_value(request):
     players = Player.objects.all()
@@ -53,10 +54,24 @@ def all_teams(request):
     return render(request, 'all_teams/all_teams.html', {'myteams': myteams})
 
 def team_details(request, id):
-    myteam = get_object_or_404(Team, id=id)
-    #teamstandings = get_object_or_404(Standing,id=id)
-    teamstandings = Standing.objects.filter(team=myteam).first()
-    return render(request, 'all_teams/team_details.html', {'myteam': myteam, 'mystandings': teamstandings})
+    myteam = Team.objects.filter(id=id).first()
+    teamstandings = Standing.objects.filter(team=myteam).order_by('-season').first()
+    num_players = Player.objects.filter(team=myteam).count()
+
+    
+    total_goals = Player.objects.filter(team=myteam).aggregate(Sum('goals'))['goals__sum']
+
+    # Obliczamy średni wiek zawodników (uwzględniając aktualny rok)
+    players = Player.objects.filter(team=myteam).exclude(dateOfBirth=None)
+    avg_age = None
+    if players.exists():
+        current_year = date.today().year
+        avg_age = sum(current_year - player.dateOfBirth.year for player in players) / players.count()
+
+    return render(request, 'all_teams/team_details.html', {
+        'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A"  })
+    
+    #return render(request, 'all_teams/team_details.html', {'myteam': myteam, 'mystandings': teamstandings})
 
 def all_matches(request):
     mymatches = Match.objects.all()
