@@ -5,7 +5,6 @@ import pandas as pd
 import gdown
 from sqlalchemy import create_engine
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 DATA_DIR = "data"
@@ -44,7 +43,7 @@ def download_player_plots():
         return
     try:
         gdown.download_folder(
-            f"https://drive.google.com/drive/folders/{PLOTS_FOLDER_ID}",
+            id=PLOTS_FOLDER_ID, 
             output=PLOTS_DIR,
             quiet=False,
             use_cookies=False
@@ -52,7 +51,6 @@ def download_player_plots():
         logger.info("All plots have been downloaded successfully")
     except Exception as e:
         logger.error(f"Downloading plots failed: {e}", exc_info=True)
-
 
 def load_csv_to_database(engine):
     for filename in os.listdir(DATA_DIR):
