@@ -42,12 +42,13 @@ def download_player_plots():
         logger.info(f"Folder {PLOTS_DIR} already contains files")
         return
     try:
-        gdown.download_folder(
-            id=PLOTS_FOLDER_ID, 
-            output=PLOTS_DIR,
-            quiet=False,
-            use_cookies=False
-        )
+        file_list = gdown.get_files_from_folder(PLOTS_FOLDER_ID)
+        if not file_list:
+            logger.error("No files found in the folder! Check permissions.")
+            return
+        for file in file_list:
+            output_path = os.path.join(PLOTS_DIR, file['name'])
+            gdown.download(id=file['id'], output=output_path, quiet=False)
         logger.info("All plots have been downloaded successfully")
     except Exception as e:
         logger.error(f"Downloading plots failed: {e}", exc_info=True)
