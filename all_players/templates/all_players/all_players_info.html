@@ -23,7 +23,16 @@
 </ul>
 
 
-
+<ul>
+   {% for player in players %}
+    <li>
+        <a href="{% url 'details' player.id %}">{{ player.firstname }} {{ player.lastname }}</a> - {{ player.position }}
+        {% if player.marketValue %}
+            (Market Value: {{ player.marketValue }} €)
+        {% endif %}
+    </li>
+   {% endfor %}
+</ul>
 
 
 {% if players|length > 0 and players.0.team %}
