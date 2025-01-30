@@ -2,11 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from all_players.models import Player, Team, Match
 
-
 class ViewTestsAllPlayers(TestCase):
-
     def setUp(self):
-        # Tworzenie drużyny, gracza i meczu
         self.team = Team.objects.create(
             Team_Name="Real Madrid",
             Country="Spain",
@@ -37,7 +34,6 @@ class ViewTestsAllPlayers(TestCase):
             Score="3-1",
             Status="Finished"
         )
-        # URL-e do testów
         self.home_url = reverse('home')
         self.all_players_url = reverse('all_players')
         self.team_players_url = reverse('team_players', kwargs={'team_id': self.team.id})
@@ -48,6 +44,7 @@ class ViewTestsAllPlayers(TestCase):
         self.match_details_url = reverse('match_details', kwargs={'id': self.match.id})
         self.top_market_value_url = reverse('top_market_value')
         self.top_performance_url = reverse('top_performance')
+
     def test_all_players_view(self):
         response = self.client.get(self.all_players_url)
         self.assertEqual(response.status_code, 200)

@@ -8,11 +8,6 @@ def top_market_value(request):
     below_5m = players.filter(marketValue__lt=5000000)
     between_5m_20m = players.filter(marketValue__gte=5000000, marketValue__lt=20000000)
     above_20m = players.filter(marketValue__gte=20000000)
-
-    # print(f"Below $5M: {below_5m}")
-    # print(f"$5M–$20M: {between_5m_20m}")
-    # print(f"Over $20M: {above_20m}")
-
     context = {
         'below_5m': below_5m,
         'between_5m_20m': between_5m_20m,
@@ -20,18 +15,15 @@ def top_market_value(request):
     }
     return render(request, 'all_players/top_market_value.html', context)
 
-
 def top_performance(request):
     players = Player.objects.all()
     top_scorers = players.filter(goals__gt=10)
     top_assisters = players.filter(assists__gt=5)
-
     context = {
         'top_scorers': top_scorers,
         'top_assisters': top_assisters,
     }
     return render(request, 'all_players/top_performance.html', context)
-
 
 def all_players(request, team_id=None):
     if team_id:
@@ -57,22 +49,15 @@ def team_details(request, id):
     myteam = Team.objects.filter(id=id).first()
     teamstandings = Standing.objects.filter(team=myteam).order_by('-season').first()
     num_players = Player.objects.filter(team=myteam).count()
-
-    
     total_goals = Player.objects.filter(team=myteam).aggregate(Sum('goals'))['goals__sum']
-
-    # Obliczamy średni wiek zawodników (uwzględniając aktualny rok)
     players = Player.objects.filter(team=myteam).exclude(dateOfBirth=None)
     avg_age = None
     if players.exists():
         current_year = date.today().year
         avg_age = sum(current_year - player.dateOfBirth.year for player in players) / players.count()
-
     return render(request, 'all_teams/team_details.html', {
         'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A"  })
     
-    #return render(request, 'all_teams/team_details.html', {'myteam': myteam, 'mystandings': teamstandings})
-
 def all_matches(request):
     mymatches = Match.objects.all()
     return render(request, 'all_matches/all_matches.html', {'mymatches': mymatches})
