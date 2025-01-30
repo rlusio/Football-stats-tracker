@@ -2,11 +2,11 @@ import os
 
 # Lista komend do wykonania
 commands = [
-    "makemigrations",
-    "migrate",
     "competitions",
+    "comp_teams"
     "make_matches",
-    "make_teams"
+    "players_matches"
+    "standings"
 ]
 
 # Wykonanie każdej komendy

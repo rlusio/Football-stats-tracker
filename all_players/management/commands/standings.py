@@ -40,4 +40,4 @@ class Command(BaseCommand):
                     }
                 )
                 self.stdout.write( self.style.SUCCESS(f"Processed {t}"))
-        self.stdout.write(self.style.SUCCESS("✅ Standings imported successfully!"))
+        self.stdout.write(self.style.SUCCESS(" Standings imported successfully!"))

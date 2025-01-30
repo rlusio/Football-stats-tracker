@@ -25,7 +25,7 @@ class Player(models.Model):
     firstname = models.CharField(max_length=255)
     lastname = models.CharField(max_length=255)
     position = models.CharField(max_length=255, null=True, blank=True)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=1)  
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, null=True, blank=True)  
     joined_date = models.DateField(null=True, blank=True)
     nationality = models.CharField(max_length=255)
     marketValue = models.BigIntegerField(null=True)
@@ -40,18 +40,21 @@ class Player(models.Model):
 
     
 class Match(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, null=True, blank=True)
     Competators = models.CharField(max_length=255, null=False) 
     Match_Date = models.DateTimeField(null=True, blank=True) 
     Match_Place = models.CharField(max_length=255, null=False)  
     Competetion = models.CharField(max_length=255, null=False)  
-    Season_Start_date = models.DateField(null=False)
-    Season_End_date = models.DateField(null=False)  
+    Season_Start_date = models.DateField(null=True, blank=True)
+    Season_End_date = models.DateField(null=True, blank=True)  
     Score = models.CharField(max_length=255, null=True)
     Score_Details = models.CharField(max_length=20, default="0 - 0")
     Status = models.CharField(max_length=255, null=False)
     Referees = models.TextField(null=True, blank=True)
     Stage = models.CharField(max_length=50, null=True, blank=True)
     Last_Updated = models.DateTimeField(null=True, blank=True) 
+    winner = models.CharField(max_length=255, null=True, blank=True)
+    duration = models.CharField(max_length=50, null=True, blank=True)
     def __str__(self):
         return f"{self.Competators} - {self.Match_Date}"
 
@@ -60,7 +63,7 @@ class Competitions(models.Model):
    
 class Standing(models.Model):
     season = models.IntegerField()  
-    position = models.IntegerField()  
+    position = models.IntegerField()  #w lidze
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="standings")
     played_games = models.IntegerField(default=0)
     form = models.CharField(max_length=20, null=True, blank=True, default="")  
