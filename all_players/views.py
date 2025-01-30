@@ -68,12 +68,7 @@ def all_teams(request):
     myteams = Team.objects.all()
     return render(request, 'all_teams/all_teams.html', {'myteams': myteams})
 
-def top_wins(request):
-    players = Player.objects.annotate(
-        wins=Count('team__wins')
-    ).order_by('-wins')
 
-    return render(request, 'all_players/top_wins.html', {'players': players})
 
 
 def team_details(request, id):
