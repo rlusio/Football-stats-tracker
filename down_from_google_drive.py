@@ -1,78 +1,49 @@
+import pandas as pd
+import requests
+from sqlalchemy import create_engine
 import os
 import logging
-import requests
-import pandas as pd
-import gdown
-from sqlalchemy import create_engine
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-DATA_DIR = "data"
-PLOTS_DIR = "player_plots"
-os.makedirs(DATA_DIR, exist_ok=True)
-os.makedirs(PLOTS_DIR, exist_ok=True)
-FILES = {
-    "seasons.csv": "1t79cwhBgnfrze0Cn63SDlllGaKnv93p8",
-    "playersData.csv": "10cNmxPZKnJxS5rfw1q3JFnFrZW8IUIff",
-    "matchesData.csv": "1NU0KH0u7C4uwbX0acy6OP5Pc9tBEj_o1",
-    "formatted_matches.csv": "1-bdOUi-Iy9-5CXtZuaNfgCyuVBbNqhCe",
-    "competitions_ids.csv": "1kDgomYa2ojWPfVF15jlMLDC61AigZB4P",
-    "competition_teams.csv": "15PWeNSQGRUM1HIM4hiaaMo62QFfEHITU",
-    "competition_standings.csv": "1_q88PPK4PkU-PqgVlsgMAM2DQSrGPwpr",
-}
-PLOTS_FOLDER_ID = "1uEtR9gC9qbyA33nVR31He98jqTrZoA55"
-def download_files():
-    for filename, file_id in FILES.items():
-        file_path = os.path.join(DATA_DIR, filename)
-        if os.path.exists(file_path):
-            logger.info(f"{filename} already exists")
-            continue
+def download_files_from_google_drive():
+    files = {
+        "seasons.csv": "1t79cwhBgnfrze0Cn63SDlllGaKnv93p8",
+        "playersData.csv": "10cNmxPZKnJxS5rfw1q3JFnFrZW8IUIff",
+        "matchesData.csv":"1NU0KH0u7C4uwbX0acy6OP5Pc9tBEj_o1",
+        "formatted_matches.csv": "1-bdOUi-Iy9-5CXtZuaNfgCyuVBbNqhCe",
+        "competitions_ids.csv": "1kDgomYa2ojWPfVF15jlMLDC61AigZB4P",
+        "competition_teams.csv": "15PWeNSQGRUM1HIM4hiaaMo62QFfEHITU",
+        "competition_standings.csv": "1_q88PPK4PkU-PqgVlsgMAM2DQSrGPwpr",
+    }
+    os.makedirs("data", exist_ok=True)
+    for filename, file_id in files.items():
         url = f"https://drive.google.com/uc?export=download&id={file_id}"
-        try:
-            response = requests.get(url, stream=True)
-            response.raise_for_status()
-            with open(file_path, "wb") as f:
-                f.write(response.content)
-            logger.info(f"Downloaded {filename}")
-        except requests.RequestException as e:
-            logger.error(f"Downloading {filename} failed: {e}")
-
-def download_player_plots():
-    if os.listdir(PLOTS_DIR):
-        logger.info(f"Folder {PLOTS_DIR} already contains files")
-        return
-    try:
-        file_list = gdown.get_files_from_folder(PLOTS_FOLDER_ID)
-        if not file_list:
-            logger.error("No files found in the folder! Check permissions.")
-            return
-        for file in file_list:
-            output_path = os.path.join(PLOTS_DIR, file['name'])
-            gdown.download(id=file['id'], output=output_path, quiet=False)
-        logger.info("All plots have been downloaded successfully")
-    except Exception as e:
-        logger.error(f"Downloading plots failed: {e}", exc_info=True)
-
-def load_csv_to_database(engine):
-    for filename in os.listdir(DATA_DIR):
-        file_path = os.path.join(DATA_DIR, filename)
-        table_name = filename.split(".")[0]
+        response = requests.get(url, stream=True)
+        file_path = os.path.join("data", filename)
+        with open(file_path, "wb") as f:
+            f.write(response.content)
+        logger.info(f"File {filename} has been downoladed and saved in {file_path}")
+        
+def load_csv_to_database(engine, folder="data"):
+    for filename in os.listdir(folder):
         if filename.endswith(".csv"):
+            file_path = os.path.join(folder, filename)
             df = pd.read_csv(file_path)
+            table_name = filename.split(".")[0]
+            df.to_sql(table_name, engine, if_exists="replace", index=False)
+            logger.info(f"File {filename} has been loaded to database as a {table_name}")
+
         elif filename.endswith(".json"):
+            file_path = os.path.join(folder, filename)
             with open(file_path, 'r') as file:
                 data = file.read()
+            table_name = filename.split(".")[0]
             df = pd.DataFrame([data])
-        else:
-            continue
-        try:
             df.to_sql(table_name, engine, if_exists="replace", index=False)
-            logger.info(f"{filename} loaded to database as a{table_name}`.")
-        except Exception as e:
-            logger.error(f"{filename} can't be saved: {e}")
+            logger.info(f"File {filename} has been loaded to database as a {table_name}")
 
 if __name__ == "__main__":
     engine = create_engine("postgresql://football_stats_tracker_user:kF1QusNOQ9MKB5VdhMWLldIPs21oRhcV@dpg-cu98fmi3esus73b1lec0-a.oregon-postgres.render.com/football_stats_tracker")
-    download_files()
-    download_player_plots()
-    load_csv_to_database(engine)
+    download_files_from_google_drive() 
+    load_csv_to_database(engine)  
