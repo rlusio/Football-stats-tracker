@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Players by Position
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Select Position</h1>
+
+<div class="d-flex flex-wrap justify-content-center">
+    {% for position in positions %}
+        <a href="{% url 'players_by_position' position %}" class="position-btn">
+            {{ position }}
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock %}
