@@ -7,8 +7,6 @@
 {% block content %}
 <div class="container mt-4">
     <h1 class="mb-3">All Matches</h1>
-
-    <!-- Formularz wyszukiwania -->
     <form method="GET" action="{% url 'all_matches' %}" class="mb-4">
         <div class="input-group">
             <input type="text" name="q" class="form-control" placeholder="Search matches..." value="{{ query }}">
@@ -23,7 +21,7 @@
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title text-primary">{{ x.Competetion }}</h5>
-                            <p class="card-text">
+                            <p  class="card-text text-dark">
                                 <strong>Competitors:</strong> {{ x.Competators }}<br>
                                 <strong>Date:</strong> {{ x.Match_Date }}
                             </p>
