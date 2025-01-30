@@ -5,6 +5,8 @@ from datetime import date
 import os
 import matplotlib.pyplot as plt
 from django.conf import settings
+from django.shortcuts import render
+from .models import Player
 
 def top_market_value(request):
     players = Player.objects.all()
@@ -72,9 +74,7 @@ def top_wins(request):
     players = Player.objects.annotate(
         wins=Count('team__wins')
     ).order_by('-wins')
-
     return render(request, 'all_players/top_wins.html', {'players': players})
-
 
 def team_details(request, id):
     myteam = Team.objects.filter(id=id).first()
@@ -107,14 +107,11 @@ def user(request):
 def main(request):
     return render(request, 'main/home.html')
 
-from django.shortcuts import render
-from .models import Player
-
 def by_position(request):
-    positions = Player.objects.values_list('position', flat=True).distinct()  # Pobiera unikalne pozycje
+    positions = Player.objects.values_list('position', flat=True).distinct()  
     return render(request, 'all_players/by_position.html', {'positions': positions})
 
 def players_by_position(request, position):
-    players = Player.objects.filter(position=position)  # Pobiera graczy na danej pozycji
+    players = Player.objects.filter(position=position) 
     return render(request, 'all_players/players_by_position.html', {'players': players, 'position': position})
 
