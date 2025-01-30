@@ -7,11 +7,9 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 API_KEY = os.getenv('API_KEY')
 logger = logging.getLogger(__name__)
-
 class EmptyDataError(Exception):
   def __init__(self, s: str=""):
     super().__init__(s)
-
 class UnknownIDError(Exception): 
   def __init__(self, s: str=""):
     super().__init__(s)
@@ -53,19 +51,15 @@ def get_competition_teams(competition_id: str, year: int = 2024) -> list:
     try:
         response = requests.get(uri, headers=headers)
         response.raise_for_status()
-
         logger.info(f"Response for competition {competition_id}: {response.json()}")
-
         teams = response.json().get('teams', [])
         if not teams:
             logger.warning(f"No teams found for competition {competition_id} in season {year}.")
             raise EmptyDataError("No teams found.")
-        
         return teams
     except requests.exceptions.RequestException as e:
         logger.error(f"Failed to fetch teams for competition {competition_id}: {str(e)}")
         raise e
-
 
 def get_competition_standings(id: str, year: int=2024, type: str="TOTAL") -> dict:
   try:
@@ -98,9 +92,7 @@ def get_team_players(id: str) -> dict:
     try:
         response = requests.get(uri, headers=headers)
         response.raise_for_status()
-
         logger.info(f"Response for team {id}: {response.json()}")
-
         squad = response.json().get('squad', [])
         result = {
             player["id"]: {
@@ -109,7 +101,6 @@ def get_team_players(id: str) -> dict:
                 "dateOfBirth": player.get("dateOfBirth", None),
                 "nationality": player.get("nationality", "Unknown"),
                 "shirtNumber": player.get("shirtNumber", None),
-
             }
             for player in squad
         }
@@ -118,7 +109,6 @@ def get_team_players(id: str) -> dict:
     except requests.exceptions.RequestException as e:
         logger.warning(f"Failed to fetch players for team {id}: {e}")
         raise e
-
 
 def get_player(id: str):
   uri = f'https://api.football-data.org/v4/persons/{id}'
@@ -172,7 +162,6 @@ def get_player_stats(id: str):
         stats.append(match_results)
     return stats
     
-
 def get_match(competition_id, year: int = 2024):
   uri = f'https://api.football-data.org/v4/teams/{competition_id}/matches/'
   headers = {'X-Auth-Token': API_KEY}
@@ -185,7 +174,6 @@ def get_match(competition_id, year: int = 2024):
     else:
       logger.error(f"Unexpected response format: {response.text}")
       raise ValueError("Response is not JSON")
-
   except requests.exceptions.RequestException as e:
     logger.warning(f"failed to fetch matches' {id} data ({str(e)})")
     raise e

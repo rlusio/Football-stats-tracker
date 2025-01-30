@@ -1,5 +1,6 @@
 import api
 import json
+
 def current_season():
     print(api.get_current_season('2014'))
 
