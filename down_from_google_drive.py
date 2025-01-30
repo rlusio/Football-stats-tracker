@@ -40,13 +40,19 @@ def download_files():
 
 def download_player_plots():
     if os.listdir(PLOTS_DIR):
-        logger.info(f"Folder {PLOTS_DIR} already has this files")
+        logger.info(f"Folder {PLOTS_DIR} already contains files")
         return
     try:
-        gdown.download_folder(id=PLOTS_FOLDER_ID, output=PLOTS_DIR, quiet=False, use_cookies=False, remaining_ok=True)
-        logger.info("Plots have been downloaded")
+        gdown.download_folder(
+            f"https://drive.google.com/drive/folders/{PLOTS_FOLDER_ID}",
+            output=PLOTS_DIR,
+            quiet=False,
+            use_cookies=False
+        )
+        logger.info("All plots have been downloaded successfully")
     except Exception as e:
-        logger.error(f"Downloading plots failed: {e}")
+        logger.error(f"Downloading plots failed: {e}", exc_info=True)
+
 
 def load_csv_to_database(engine):
     for filename in os.listdir(DATA_DIR):
