@@ -2,9 +2,12 @@ from all_players.models import Player, Team, Match, Standing
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Count, Avg, Sum
 from datetime import date
+<<<<<<< HEAD
 import os
 import matplotlib.pyplot as plt
 from django.conf import settings
+=======
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4
 
 def top_market_value(request):
     players = Player.objects.all()
@@ -28,6 +31,7 @@ def top_performance(request):
     }
     return render(request, 'all_players/top_performance.html', context)
 
+<<<<<<< HEAD
 def generate_team_chart(team_id, won, lost, draw):
     chart_dir = os.path.join(settings.BASE_DIR, 'mystaticfiles/charts')
     os.makedirs(chart_dir, exist_ok=True)  
@@ -46,6 +50,8 @@ def generate_team_chart(team_id, won, lost, draw):
     plt.close()  
     return f"charts/{chart_filename}"
 
+=======
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4
 def all_players(request, team_id=None):
     if team_id:
         team = get_object_or_404(Team, id=team_id)
@@ -68,6 +74,17 @@ def all_teams(request):
     myteams = Team.objects.all()
     return render(request, 'all_teams/all_teams.html', {'myteams': myteams})
 
+<<<<<<< HEAD
+=======
+def top_wins(request):
+    players = Player.objects.annotate(
+        wins=Count('team__wins')
+    ).order_by('-wins')
+
+    return render(request, 'all_players/top_wins.html', {'players': players})
+
+
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4
 def team_details(request, id):
     myteam = Team.objects.filter(id=id).first()
     teamstandings = Standing.objects.filter(team=myteam).order_by('-season').first()
@@ -75,16 +92,23 @@ def team_details(request, id):
     total_goals = Player.objects.filter(team=myteam).aggregate(Sum('goals'))['goals__sum']
     players = Player.objects.filter(team=myteam).exclude(dateOfBirth=None)
     avg_age = None
+<<<<<<< HEAD
 
     won = teamstandings.won if teamstandings else 0
     lost = teamstandings.lost if teamstandings else 0
     draw = teamstandings.draw if teamstandings else 0
     chart_url = generate_team_chart(id, won, lost, draw)
+=======
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4
     if players.exists():
         current_year = date.today().year
         avg_age = sum(current_year - player.dateOfBirth.year for player in players) / players.count()
     return render(request, 'all_teams/team_details.html', {
+<<<<<<< HEAD
         'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A"  ,'chart_url': chart_url})
+=======
+        'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A"  })
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4
     
 def all_matches(request):
     mymatches = Match.objects.all()
@@ -99,3 +123,25 @@ def user(request):
 
 def main(request):
     return render(request, 'main/home.html')
+<<<<<<< HEAD
+=======
+
+from django.shortcuts import render
+from .models import Player
+
+def by_position(request):
+    positions = Player.objects.values_list('position', flat=True).distinct()  # Pobiera unikalne pozycje
+    return render(request, 'all_players/by_position.html', {'positions': positions})
+
+def players_by_position(request, position):
+    players = Player.objects.filter(position=position)  # Pobiera graczy na danej pozycji
+    return render(request, 'all_players/players_by_position.html', {'players': players, 'position': position})
+
+def by_nationality(request):
+    nationalities = Player.objects.values_list('nationality', flat=True).distinct()  # Pobiera unikalne narodowości
+    return render(request, 'all_players/by_nationality.html', {'nationalities': nationalities})
+
+def players_by_nationality(request, nationality):
+    players = Player.objects.filter(nationality=nationality)  # Pobiera graczy danej narodowości
+    return render(request, 'all_players/players_by_nationality.html', {'players': players, 'nationality': nationality})
+>>>>>>> 332d52b82a11a0e63b87edba54c89ed99ffcbec4

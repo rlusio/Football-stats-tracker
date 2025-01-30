@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import patch, Mock
-from django.test import TestCase
 import scripts.api as api
+import requests
 
-class APITestCase(TestCase):
+class APITestCase(unittest.TestCase):
     @patch('scripts.api.requests.get')
     def test_get_competitions_ids(self, mock_get):
         mock_response = Mock()
@@ -136,3 +136,33 @@ class APITestCase(TestCase):
         result = api.get_player("1")
         expected_result = mock_response.json.return_value
         self.assertEqual(result, expected_result)
+
+    @patch('scripts.api.requests.get')
+    def test_get_players_matches(self, mock_requests_get):
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'filters': {'limit': 15, 'offset': 0, 'competitions': 'FL1,CL,FL2', 'permission': 'TIER_ONE'},
+            'resultSet': {'count': 0},
+            'aggregations': 'As this a CPU intensive operation, this is only available for paid subscriptions.', 
+            'person': {'id': 421,
+                       'name': 'Mathieu Coutadeur', 
+                       'firstName': 'Mathieu', 
+                       'lastName': 'Coutadeur', 
+                       'dateOfBirth': '1986-03-20', 
+                       'nationality': 'France', 
+                       'section': 'Midfield', 
+                       'position': None, 'shirtNumber': 6, 
+                       'lastUpdated': '2022-04-10T07:23:32Z'}, 
+            'matches': []
+            }
+        mock_requests_get.return_value = mock_response
+        result = api.get_players_matches("421")
+        expected_result = mock_response.json.return_value
+        self.assertEqual(result, expected_result)
+
+    @patch('scripts.api.requests.get')
+    def test_get_match_exception(self, mock_requests_get):
+        mock_requests_get.side_effect = requests.exceptions.RequestException("404 Client Error:  for url: https://api.football-data.org/v4/teams/64/matches/")
+        with self.assertRaises(requests.exceptions.RequestException):
+            api.get_match("64")
+
