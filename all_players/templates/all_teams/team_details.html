@@ -9,7 +9,7 @@ Details about {{ myteam.Team_Name }}
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-4">
-            <div class="card text-center shadow-sm">
+            <div class="card text-center shadow-sm bg-light">
                 <div class="card-body">
                     <img src="{{ myteam.logo_url }}" alt="Logo for {{ myteam.Team_Name }}" class="img-fluid rounded-circle mb-3" style="width: 120px; height: 120px;">
                     <h3 class="card-title text-dark">{{ myteam.Team_Name }}</h3>
@@ -19,7 +19,7 @@ Details about {{ myteam.Team_Name }}
             </div>
         </div>
         <div class="col-md-8">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm bg-light">
                 <div class="card-body ">
                     <h5 class="card-title text-primary">League Statistics</h5>
                     <p class="card-text text-dark" ><strong>Position in League:</strong> {{ mystandings.position }}</p>
@@ -34,7 +34,7 @@ Details about {{ myteam.Team_Name }}
     </div>
     <div class="row mt-4">
         <div class="col-md-6">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm bg-light">
                 <div class="card-body text-center">
                     <h5 class="card-title text-primary">Team Performance</h5>
                     <img src="{% /static/{{chart_url}} %}" alt="Team Performance Chart" class="img-fluid text-dark">

@@ -11,8 +11,8 @@
 
     <div class="row">
         {% for team in myteams %}
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm text-center p-3">
+            <div class="col-md-4 mb-4 ">
+                <div class="card shadow-sm text-center p-3 bg-light">
                     <a href="{% url 'team_details' team.id %}" class="text-decoration-none text-dark">
                         <img src="{{ team.logo_url }}" alt="Logo for {{ team.Team_Name }}" class="img-fluid rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
                         <h5 class="card-title">{{ team.Team_Name }}</h5>
