@@ -16,7 +16,7 @@ Details about {{ myplayer.firstname }} {{ myplayer.lastname }}
 {% else %}
     <p>No statistics available for this player.</p>
 {% endif %}
-
+<br>
 
 Go to Players in <a href="{% url 'team_players' myplayer.team.id %}"> {{ myplayer.team.Team_Name }}</a>
  

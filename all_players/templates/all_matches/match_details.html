@@ -3,7 +3,7 @@
 {% block title %}
   Match {{mymatch.Competators}} details
 {% endblock %}
-
+<hr class="my-4">
 {% block content %}
 <h1>{{ mymatch.Competetion }}</h1>
 <p><strong>Competitors:</strong> {{ mymatch.Competators }}</p>
@@ -15,6 +15,6 @@
 <p><strong>Match Date:</strong> {{ mymatch.Match_Date }} </p>
 <p><strong>Referees:</strong> {{ mymatch.Referees }} </p>
 <p><strong>Stage:</strong> {{ mymatch.Stage }} </p>
-<p><strong>Last updated:</strong> {{ mymatch.Last_Updated }} </p>
+<br>
 <a href="{% url 'all_matches' %}">Back to All Matches</a>
 {% endblock %}
