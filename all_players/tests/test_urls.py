@@ -1,6 +1,6 @@
 from django.urls import reverse, resolve
 from django.test import TestCase
-from all_players.views import all_players,team_players , details, all_matches, all_teams, match_details, team_details, user
+from all_players.views import all_players,team_players , details, all_matches, all_teams, match_details, team_details, user, top_market_value, top_performance
 
 class TestAllPlayersURLs(TestCase):
     def test_reverse_root_url(self):
@@ -38,4 +38,13 @@ class TestAllPlayersURLs(TestCase):
     def test_reverse_user(self):
         url = reverse('user')
         self.assertEqual(resolve(url).func, user) 
+
+    def test_reverse_top_market_value(self):
+        url = reverse('top_market_value')
+        self.assertEqual(resolve(url).func, top_market_value) 
+        
+    def test_reverse_top_performance(self):
+        url = reverse('top_performance')
+        self.assertEqual(resolve(url).func, top_performance) 
+
 

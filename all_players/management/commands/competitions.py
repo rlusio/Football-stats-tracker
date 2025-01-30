@@ -5,9 +5,7 @@ import logging
 import csv
 import os
 
-
 logger = logging.getLogger(__name__)
-
 class Command(BaseCommand):
     help = "Fetch and save matches from Football-Data API"
     def handle(self, *args, **kwargs):

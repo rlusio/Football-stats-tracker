@@ -43,10 +43,7 @@ def load_csv_to_database(engine, folder="data"):
             df.to_sql(table_name, engine, if_exists="replace", index=False)
             logger.info(f"File {filename} has been loaded to database as a {table_name}")
 
-def main():
+if __name__ == "__main__":
     engine = create_engine("postgresql://football_stats_tracker_user:kF1QusNOQ9MKB5VdhMWLldIPs21oRhcV@dpg-cu98fmi3esus73b1lec0-a.oregon-postgres.render.com/football_stats_tracker")
     download_files_from_google_drive() 
     load_csv_to_database(engine)  
-
-if __name__ == "__main__":
-    main()

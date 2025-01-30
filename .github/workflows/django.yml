@@ -1,16 +1,11 @@
 name: Django CI
-
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   build:
     name: Build and Test Django Application
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies

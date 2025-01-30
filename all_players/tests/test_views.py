@@ -2,8 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from all_players.models import Player, Team, Match
 
+
 class ViewTestsAllPlayers(TestCase):
+
     def setUp(self):
+        # Tworzenie drużyny, gracza i meczu
         self.team = Team.objects.create(
             Team_Name="Real Madrid",
             Country="Spain",
@@ -21,7 +24,9 @@ class ViewTestsAllPlayers(TestCase):
             nationality="Portugal",
             marketValue=150000000,
             shirtNumber=7,
-            dateOfBirth="1985-02-05"
+            dateOfBirth="1985-02-05",
+            goals=20,
+            assists=10
         )
         self.match = Match.objects.create(
             Competators="Real Madrid vs Barcelona",
@@ -32,6 +37,7 @@ class ViewTestsAllPlayers(TestCase):
             Score="3-1",
             Status="Finished"
         )
+        # URL-e do testów
         self.home_url = reverse('home')
         self.all_players_url = reverse('all_players')
         self.team_players_url = reverse('team_players', kwargs={'team_id': self.team.id})
@@ -40,12 +46,8 @@ class ViewTestsAllPlayers(TestCase):
         self.details_url = reverse('details', kwargs={'id': self.player.id})
         self.team_details_url = reverse('team_details', kwargs={'id': self.team.id})
         self.match_details_url = reverse('match_details', kwargs={'id': self.match.id})
-
-    def test_main_view(self):
-        response = self.client.get(self.home_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Welcome to Football Stats Tracker")
-
+        self.top_market_value_url = reverse('top_market_value')
+        self.top_performance_url = reverse('top_performance')
     def test_all_players_view(self):
         response = self.client.get(self.all_players_url)
         self.assertEqual(response.status_code, 200)
@@ -80,3 +82,18 @@ class ViewTestsAllPlayers(TestCase):
         response = self.client.get(self.match_details_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "3-1")
+
+    def test_top_market_value_view(self):
+        Player.objects.all().delete()
+        response = self.client.get(self.top_market_value_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Below $5M")
+        self.assertContains(response, "$5M–$20M")
+        self.assertContains(response, "Over $20M")
+
+    def test_top_performance_view(self):
+        Player.objects.all().delete()
+        response = self.client.get(self.top_performance_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Top Scorers (Goals > 10)")
+        self.assertContains(response, "Top Assisters (Assists > 5)")

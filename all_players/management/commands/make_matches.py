@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = "Fetch and save matches from Football-Data API"
-
     def handle(self, *args, **kwargs):
         data_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data"))
         file_path = os.path.join(data_folder,'formatted_matches.csv')

@@ -66,7 +66,6 @@ def scrape_competition_standings():
         for row in reader:
             ids.append(row['id'])
     data = {}
-    
     for id in ids:
         try:
             data[id] = api.get_competition_standings(id)
@@ -82,13 +81,11 @@ def scrape_players():
     with open('competition_teams.json', 'r') as file:
         data_teams = json.load(file)
     player_ids = []
-
     for year, teams in data_teams.items():
         for team in teams:
             squad = team.get('squad', [])
             for player in squad:
                 player_ids.append(player['id'])
-
     with open("players_data.csv", "w", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(["id", "data"])

@@ -5,14 +5,11 @@ import os
 
 class Command(BaseCommand):
     help = "Import teams, coaches, and players from a single CSV file"
-
     def handle(self, *args, **kwargs):
         data_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data"))
         file_path = os.path.join(data_folder,'competition_teams.csv')
-        
         with open(file_path, newline='', encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
-
             for row in reader:
                 t = row.get('team_name')
                 team, created = Team.objects.update_or_create(
@@ -29,9 +26,7 @@ class Command(BaseCommand):
                         "contract_end": row.get("contract_end"),
                     }
                 )
-
                 first_name, last_name = row["player_name"].split(" ", 1) if " " in row["player_name"] else (row["player_name"], "")
-               
                 Player.objects.update_or_create(
                     player_id=row["player_id"],
                     team=team,

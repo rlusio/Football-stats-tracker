@@ -5,7 +5,6 @@ import time
 import logging
 
 logger = logging.getLogger(__name__)
-
 class Command(BaseCommand):
     help = "Make the database with teams and players from Football-Data API"
     def handle(self, *args, **kwargs):

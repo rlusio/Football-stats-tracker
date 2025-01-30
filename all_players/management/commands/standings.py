@@ -5,11 +5,9 @@ from all_players.models import Team, Standing
 
 class Command(BaseCommand):
     help = "Import season standings from CSV"
-
     def handle(self, *args, **kwargs):
         data_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data"))
         file_path = os.path.join(data_folder,'competition_standings.csv')
-       
         with open(file_path, newline='', encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
