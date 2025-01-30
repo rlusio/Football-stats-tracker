@@ -13,11 +13,13 @@
         <a class="nav-link {% if request.path == '/all_players/' %}active{% endif %}" href="{% url 'all_players' %}">All Players</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {% if request.path == '/all_players/top-market-value/' %}active{% endif %}" href="{% url 'top_market_value' %}">By Market Value</a>
+        <a class="nav-link {% if request.path == '/all_players/top-wins/' %}active{% endif %}" href="{% url 'top_wins' %}">By Wins</a>
     </li>
+
     <li class="nav-item">
-        <a class="nav-link {% if request.path == '/all_players/top-performance-stats/' %}active{% endif %}" href="{% url 'top_performance' %}">By Performance Stats</a>
+        <a class="nav-link {% if request.path == '/all_players/by-position/' %}active{% endif %}" href="{% url 'by_position' %}">By Position</a>
     </li>
+
 </ul>
 
 
