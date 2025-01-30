@@ -1,6 +1,6 @@
 name: Django CI
 on:
-  pull:
+  push:
     branches: [ "main" ]
 jobs:
   build:
