@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Players by Nationality
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Select Nationality</h1>
+
+<div class="d-flex flex-wrap justify-content-center">
+    {% for nationality in nationalities %}
+        <a href="{% url 'players_by_nationality' nationality %}" class="nationality-btn">
+            {{ nationality }}
+        </a>
+    {% endfor %}
+</div>
+
+{% endblock %}

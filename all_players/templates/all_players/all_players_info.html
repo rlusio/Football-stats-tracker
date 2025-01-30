@@ -12,8 +12,9 @@
     <li class="nav-item">
         <a class="nav-link {% if request.path == '/all_players/' %}active{% endif %}" href="{% url 'all_players' %}">All Players</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link {% if request.path == '/all_players/top-wins/' %}active{% endif %}" href="{% url 'top_wins' %}">By Wins</a>
+   <li class="nav-item">
+    <a class="nav-link {% if request.path == '/all_players/by-nationality/' %}active{% endif %}" 
+       href="{% url 'by_nationality' %}">By Nationality</a>
     </li>
 
     <li class="nav-item">
