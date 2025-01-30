@@ -39,7 +39,9 @@ def team_players(request, team_id):
 
 def details(request, id):
     myplayer = get_object_or_404(Player, id=id) 
-    return render(request, 'all_players/details.html', {'myplayer': myplayer})
+    filename = f"{myplayer.firstname} {myplayer.lastname}_stats.png"
+    plot_path = f"player_plots/{filename}"
+    return render(request, 'all_players/details.html', {'myplayer': myplayer,'plot_path': plot_path})
 
 def all_teams(request):
     myteams = Team.objects.all()
