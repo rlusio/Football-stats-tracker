@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+
 
 {% block title %}
 Details about {{ myteam.Team_Name }}
@@ -37,7 +37,7 @@ Details about {{ myteam.Team_Name }}
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <h5 class="card-title text-primary">Team Performance</h5>
-                    <img src="{% static 'charts/' %}{{ chart_url }}" alt="Team Performance Chart" class="img-fluid text-dark">
+                    <img src="{% /static/{{chart_url}} %}" alt="Team Performance Chart" class="img-fluid text-dark">
                 </div>
             </div>
         </div>
