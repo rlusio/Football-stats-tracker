@@ -11,6 +11,8 @@ Details about {{ myteam.Team_Name }}
 <p><strong>Stadium:</strong> {{ myteam.City }}</p>
 <p><strong>Market Value:</strong> {{ myteam.marketValue }}</p>
 <p><strong>Number of Players:</strong> {{ myteam.Number_of_Players }}</p>
+<p><strong>Position in league:</strong> {{ mystandings.position }}</p>
+<p><strong>Played games:</strong> {{ mystandings.played_games }}</p>
 <!--<p><strong>Standings:</strong> {{ myteam.Standings }}</p>-->
 <p>
     <a href="{% url 'team_players' myteam.id %}">View All Players</a>

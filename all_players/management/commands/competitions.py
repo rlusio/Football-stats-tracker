@@ -1,4 +1,3 @@
-
 from django.core.management.base import BaseCommand
 from all_players.models import Competitions
 import logging
