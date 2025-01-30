@@ -1,11 +1,10 @@
 from all_players.models import Player, Team, Match, Standing
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Count, Avg, Sum, Q
+from django.db.models import Count, Avg, Sum
 from datetime import date
 import os
 import matplotlib.pyplot as plt
 from django.conf import settings
-from django.shortcuts import render
 
 def top_market_value(request):
     players = Player.objects.all()
@@ -30,8 +29,8 @@ def top_performance(request):
     return render(request, 'all_players/top_performance.html', context)
 
 def generate_team_chart(team_id, won, lost, draw):
-    chart_dir = os.path.join(settings.BASE_DIR, '/static/charts')
-    os.makedirs(chart_dir, exist_ok=True)   
+    chart_dir = os.path.join(settings.BASE_DIR, 'mystaticfiles/charts')
+    os.makedirs(chart_dir, exist_ok=True)  
     chart_filename = f"team_{team_id}_chart.png"
     chart_path = os.path.join(chart_dir, chart_filename)
     labels = ['Wins', 'Losses', 'Draws']
@@ -44,7 +43,7 @@ def generate_team_chart(team_id, won, lost, draw):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(chart_path)
-    plt.close()
+    plt.close()  
     return f"charts/{chart_filename}"
 
 def all_players(request, team_id=None):
@@ -69,12 +68,6 @@ def all_teams(request):
     myteams = Team.objects.all()
     return render(request, 'all_teams/all_teams.html', {'myteams': myteams})
 
-def top_wins(request):
-    players = Player.objects.annotate(
-        wins=Count('team__wins')
-    ).order_by('-wins')
-    return render(request, 'all_players/top_wins.html', {'players': players})
-
 def team_details(request, id):
     myteam = Team.objects.filter(id=id).first()
     teamstandings = Standing.objects.filter(team=myteam).order_by('-season').first()
@@ -82,6 +75,7 @@ def team_details(request, id):
     total_goals = Player.objects.filter(team=myteam).aggregate(Sum('goals'))['goals__sum']
     players = Player.objects.filter(team=myteam).exclude(dateOfBirth=None)
     avg_age = None
+
     won = teamstandings.won if teamstandings else 0
     lost = teamstandings.lost if teamstandings else 0
     draw = teamstandings.draw if teamstandings else 0
@@ -90,7 +84,7 @@ def team_details(request, id):
         current_year = date.today().year
         avg_age = sum(current_year - player.dateOfBirth.year for player in players) / players.count()
     return render(request, 'all_teams/team_details.html', {
-        'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A",'chart_url': chart_url  })
+        'myteam': myteam, 'mystandings': teamstandings,'num_players': num_players, 'total_goals': total_goals,'avg_age': round(avg_age, 1) if avg_age else "N/A"  ,'chart_url': chart_url})
     
 def all_matches(request):
     mymatches = Match.objects.all()
@@ -105,12 +99,3 @@ def user(request):
 
 def main(request):
     return render(request, 'main/home.html')
-
-def by_position(request):
-    positions = Player.objects.values_list('position', flat=True).distinct()  
-    return render(request, 'all_players/by_position.html', {'positions': positions})
-
-def players_by_position(request, position):
-    players = Player.objects.filter(position=position) 
-    return render(request, 'all_players/players_by_position.html', {'players': players, 'position': position})
-

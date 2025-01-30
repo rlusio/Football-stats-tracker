@@ -118,7 +118,7 @@ USE_TZ = True
 STATIC_URL = '/static/' 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "mystaticfiles"),
-    os.path.join(BASE_DIR, "all_players/static"),
+    os.path.join(BASE_DIR, "mystaticfiles/charts"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
