@@ -1,0 +1,46 @@
+body {
+    background-image: url('/static/tlo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.8); 
+    color: white; 
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 80%;
+    margin: 20px auto; 
+}
+
+
+a {
+    text-decoration: none; 
+    color: white; 
+    transition: color 0.3s ease-in-out; 
+}
+
+a:hover {
+    color: yellow; 
+    text-decoration: none; 
+}
+
+.position-btn {
+    display: inline-block;
+    background-color: #333;  
+    color: white;
+    padding: 15px 30px; 
+    font-size: 18px; 
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px; 
+    margin: 10px; 
+    transition: background 0.3s, transform 0.2s;
+}
+
+.position-btn:hover {
+    background-color: #555; 
+    transform: scale(1.05); }
+

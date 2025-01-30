@@ -1,16 +1,23 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.main, name='home'),  
     path('all_players/', views.all_players, name='all_players'),  
     path('all_players/team/<int:team_id>/', views.team_players, name='team_players'),  
-    path('all_players/top-market-value/', views.top_market_value, name='top_market_value'),
-    path('all_players/top-performance-stats/', views.top_performance, name='top_performance'),
+    path('all_players/by-position/', views.by_position, name='by_position'),
+    path('all_players/by-position/<str:position>/', views.players_by_position, name='players_by_position'),
+    path('all_players/top-wins/', views.top_wins, name='top_wins'),  
     path('details/<int:id>/', views.details, name='details'),  
     path('all_teams/', views.all_teams, name='all_teams'),  
     path('all_teams/team_details/<int:id>/', views.team_details, name='team_details'),
     path('all_matches/', views.all_matches, name='all_matches'),  
     path('all_matches/match_details/<int:id>/', views.match_details, name='match_details'),  
     path('user/', views.user, name='user'),
+    
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
