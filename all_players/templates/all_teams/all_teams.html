@@ -18,7 +18,7 @@
                         <h5 class="card-title">{{ team.Team_Name }}</h5>
                     </a>
                     <p class="text-muted">{{ team.Country }}, {{ team.City }}</p>
-                    <a href="{% url 'team_details' team.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                    <a href="{% url 'team_details' team.id %}" class="team-btn">View Details</a>
                 </div>
             </div>
         {% endfor %}
