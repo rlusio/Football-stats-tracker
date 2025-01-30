@@ -3,16 +3,26 @@
 {% block title %}
 Details about {{ myteam.Team_Name }}
 {% endblock %}
+<hr class="my-4">
 
 {% block content %}
 <h1>{{ myteam.Team_Name }}</h1>
 <img src="{{ myteam.logo_url }}" alt="Logo for {{ myteam.Team_Name }}" style="width: 100px; height: 100px;">
 <p><strong>Country:</strong> {{ myteam.Country }}</p>
 <p><strong>Stadium:</strong> {{ myteam.City }}</p>
+
+
 <p><strong>Position in league:</strong> {{ mystandings.position }}</p>
 <p><strong>Played games:</strong> {{ mystandings.played_games }}</p>
+<p><strong>Won matches:</strong> {{ mystandings.won }}</p>
+<p><strong>Lost matches:</strong> {{ mystandings.lost }}</p>
+<p><strong>Draw matches:</strong> {{ mystandings.draw }}</p>
+
+<p><strong>All points:</strong> {{ mystandings.points}}</p>
+
+
 <p><strong>Number of Players:</strong> {{ num_players }}</p>
-<p><strong>Total Goals Scored:</strong> {{ total_goals|default:"0" }}</p>
+<p><strong>Total Goals Scored:</strong> {{ total_goals|default:"" }}</p>
 <p><strong>Average Player Age:</strong> {{ avg_age }}</p>
 <!--<p><strong>Standings:</strong> {{ myteam.Standings }}</p>-->
 <p>
