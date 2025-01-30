@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Top Players by Wins
+{% endblock %}
+
+{% block content %}
+<h1>Top Players by Wins</h1>
+
+<ul>
+   {% for player in players %}
+    <li>
+        <a href="{% url 'details' player.id %}">{{ player.firstname }} {{ player.lastname }}</a>
+        - {{ player.team.Team_Name }} - Wins: {{ player.wins }}
+    </li>
+   {% endfor %}
+</ul>
+
+{% endblock %}
