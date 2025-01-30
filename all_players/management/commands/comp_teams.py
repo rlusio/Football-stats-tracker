@@ -39,4 +39,4 @@ class Command(BaseCommand):
                     }
                 )
                 self.stdout.write( self.style.SUCCESS(f"Processed {t}"))
-        self.stdout.write(self.style.SUCCESS("✅ Data import completed!"))
+        self.stdout.write(self.style.SUCCESS(" Data import completed!"))

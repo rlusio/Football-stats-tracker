@@ -1,4 +1,4 @@
-from all_players.models import Player, Team, Match
+from all_players.models import Player, Team, Match, Standing
 from django.shortcuts import render, get_object_or_404
 
 def top_market_value(request):
@@ -45,7 +45,9 @@ def all_teams(request):
 
 def team_details(request, id):
     myteam = get_object_or_404(Team, id=id)
-    return render(request, 'all_teams/team_details.html', {'myteam': myteam})
+    #teamstandings = get_object_or_404(Standing,id=id)
+    teamstandings = Standing.objects.filter(team=myteam).first()
+    return render(request, 'all_teams/team_details.html', {'myteam': myteam, 'mystandings': teamstandings})
 
 def all_matches(request):
     mymatches = Match.objects.all()

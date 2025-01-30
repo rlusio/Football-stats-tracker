@@ -1,7 +1,7 @@
-import csv
-import os
 from django.core.management.base import BaseCommand
 from all_players.models import Team, Standing
+import csv
+import os
 
 class Command(BaseCommand):
     help = "Import season standings from CSV"
