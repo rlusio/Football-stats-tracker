@@ -3,8 +3,7 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
-RUN python down_from_google_drive.py
 RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn FootballStatsTrackerProject.wsgi:application -b 0.0.0.0:${PORT:-8000}"]
+CMD ["sh", "-c", "gunicorn FootballStatsTrackerProject.wsgi:application -b 0.0.0.0:${PORT:-8000}"]

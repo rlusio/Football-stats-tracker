@@ -108,4 +108,4 @@ def main():
         generate_player_plot(player, df)
 
 if __name__ == "__main__":
-    main()
+    pass

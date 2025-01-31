@@ -1,15 +1,15 @@
 from django.urls import reverse, resolve
 from django.test import TestCase
-from all_players.views import all_players,team_players , details, all_matches, all_teams, match_details, team_details, user, top_market_value, top_performance
+from all_players.views import all_players, team_players, details, all_matches, all_teams, match_details, team_details, user
 
 class TestAllPlayersURLs(TestCase):
-    def test_reverse_root_url(self):
-        url = reverse('all_players')
-        self.assertEqual(resolve(url).func, all_players)
-
     def test_reverse_all_players(self):
         url = reverse('all_players')
         self.assertEqual(resolve(url).func, all_players)
+
+    def test_reverse_team_players(self):
+        url = reverse('team_players', args=[1])
+        self.assertEqual(resolve(url).func, team_players)
 
     def test_reverse_details(self):
         url = reverse('details', args=[1])
@@ -31,20 +31,6 @@ class TestAllPlayersURLs(TestCase):
         url = reverse('team_details', args=[1])
         self.assertEqual(resolve(url).func, team_details)
 
-    def test_reverse_team_players(self):
-        url = reverse('team_players', args=[1])  
-        self.assertEqual(resolve(url).func, team_players)  
-
     def test_reverse_user(self):
         url = reverse('user')
-        self.assertEqual(resolve(url).func, user) 
-
-    def test_reverse_top_market_value(self):
-        url = reverse('top_market_value')
-        self.assertEqual(resolve(url).func, top_market_value) 
-        
-    def test_reverse_top_performance(self):
-        url = reverse('top_performance')
-        self.assertEqual(resolve(url).func, top_performance) 
-
-
+        self.assertEqual(resolve(url).func, user)

@@ -5,28 +5,8 @@ from datetime import date
 import os
 import matplotlib.pyplot as plt
 from django.conf import settings
-
-def top_market_value(request):
-    players = Player.objects.all()
-    below_5m = players.filter(marketValue__lt=5000000)
-    between_5m_20m = players.filter(marketValue__gte=5000000, marketValue__lt=20000000)
-    above_20m = players.filter(marketValue__gte=20000000)
-    context = {
-        'below_5m': below_5m,
-        'between_5m_20m': between_5m_20m,
-        'above_20m': above_20m,
-    }
-    return render(request, 'all_players/top_market_value.html', context)
-
-def top_performance(request):
-    players = Player.objects.all()
-    top_scorers = players.filter(goals__gt=10)
-    top_assisters = players.filter(assists__gt=5)
-    context = {
-        'top_scorers': top_scorers,
-        'top_assisters': top_assisters,
-    }
-    return render(request, 'all_players/top_performance.html', context)
+from django.shortcuts import render
+from .models import Player
 
 def all_players(request, team_id=None):
     if team_id:
@@ -49,14 +29,6 @@ def details(request, id):
 def all_teams(request):
     myteams = Team.objects.all()
     return render(request, 'all_teams/all_teams.html', {'myteams': myteams})
-
-def top_wins(request):
-    players = Player.objects.annotate(
-        wins=Count('team__wins')
-    ).order_by('-wins')
-
-    return render(request, 'all_players/top_wins.html', {'players': players})
-
 
 def team_details(request, id):
     myteam = Team.objects.filter(id=id).first()
@@ -85,21 +57,18 @@ def user(request):
 def main(request):
     return render(request, 'main/home.html')
 
-from django.shortcuts import render
-from .models import Player
-
 def by_position(request):
-    positions = Player.objects.values_list('position', flat=True).distinct()  # Pobiera unikalne pozycje
+    positions = Player.objects.values_list('position', flat=True).distinct()
     return render(request, 'all_players/by_position.html', {'positions': positions})
 
 def players_by_position(request, position):
-    players = Player.objects.filter(position=position)  # Pobiera graczy na danej pozycji
+    players = Player.objects.filter(position=position)  
     return render(request, 'all_players/players_by_position.html', {'players': players, 'position': position})
 
 def by_nationality(request):
-    nationalities = Player.objects.values_list('nationality', flat=True).distinct()  # Pobiera unikalne narodowości
+    nationalities = Player.objects.values_list('nationality', flat=True).distinct()
     return render(request, 'all_players/by_nationality.html', {'nationalities': nationalities})
 
 def players_by_nationality(request, nationality):
-    players = Player.objects.filter(nationality=nationality)  # Pobiera graczy danej narodowości
+    players = Player.objects.filter(nationality=nationality)  
     return render(request, 'all_players/players_by_nationality.html', {'players': players, 'nationality': nationality})
